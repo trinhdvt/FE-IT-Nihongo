@@ -1,0 +1,57 @@
+.card {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-gap: 20px;
+    border-radius: 0;
+    height: 100%;
+    box-shadow: none;
+    overflow: auto;
+}
+
+.card-sidebar {
+    display: grid;
+    grid-template-rows: 90px 1fr;
+    grid-gap: 20px;
+}
+
+
+.form-create-user p {
+    color: #504e4e;
+}
+
+.form-create-user input[type=text] {
+    background: #fff;
+    border: #ddd 1px solid;
+    border-radius: 7px;
+    height: 38px;
+    width: 100%;
+    margin-top: 1px;
+    padding: 0 15px;
+    color: #555555;
+    box-shadow: 0 0 2px #ddd;
+    transition-duration: 300ms;
+}
+
+.form-create-user input[type=text]:focus {
+    box-shadow: 0px 0px 8px #ddd;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    outline: none;
+}
+
+.form-create-user .btn-code {
+    margin-left: 20px;
+    background: rgb(67, 199, 223);
+    border: #ddd 1px solid;
+    border-radius: 7px;
+    height: 38px;
+    padding: 0 20px;
+    color: #fafafa;
+    box-shadow: 0 0 4px #ddd;
+    transition-duration: 300ms;
+    font-weight: 500;
+    opacity: 0.8;
+}
+.form-create-user .btn-code:hover {
+    opacity: 1;
+}
