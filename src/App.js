@@ -7,7 +7,7 @@ function App() {
 
 	// const token = useSelector(auth => auth.Auth.accessToken);
 	const token = "";
-	const role = 3;
+	const role = 2;
 	const isLoggedIn = () => {
 		return token === "";
 	}
