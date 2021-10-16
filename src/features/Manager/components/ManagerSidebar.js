@@ -53,10 +53,10 @@ function ManagerSidebar(props) {
                             <p className="text-lg text-gray-700 font-medium">Hospital</p>
 
                             <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600">RandomHospital1</li>
-                                <li className="text-sm font-medium text-gray-400 mt-2">RandomHospital2</li>
-                                <li className="text-sm font-medium text-gray-400 mt-2">RandomHospital3</li>
-                                <li className="text-sm font-medium text-gray-400 mt-2">RandomHospital4</li>
+                                <li className="text-sm font-medium text-gray-600 cursor-pointer">RandomHospital1</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital2</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital3</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital4</li>
                             </ul>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
@@ -82,7 +82,7 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg">
+                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -102,7 +102,7 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg">
+                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -125,29 +125,29 @@ function ManagerSidebar(props) {
                             <p className="text-lg text-gray-700 font-medium">Need Helps</p>
 
                             <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600">#lack_of_manpower</li>
-                                <li className="text-sm font-medium text-gray-400 mt-2">#lack_of_hospital_beds</li>
-                                <li className="text-sm font-medium text-gray-400 mt-2">#lack_of_facilities</li>
+                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
                             </ul>
                         </div>
                 }
             </div>
 
             <div className="absolute bottom-0 px-3 py-6 border-t border-gray-300 w-full grid grid-cols-4 gap-4" >
-                <div className="text-center cursor-pointer">
-                    <i className="fas fa-user text-gray-300"></i>
+                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                    <i className="fas fa-user"></i>
                 </div>
 
-                <div className="text-center cursor-pointer">
-                    <i className="fas fa-user-friends text-gray-300"></i>
+                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                    <i className="fas fa-user-friends"></i>
                 </div>
 
-                <div className="text-center cursor-pointer">
-                    <i className="fas fa-star text-gray-300"></i>
+                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                    <i className="fas fa-star"></i>
                 </div>
 
-                <div className="text-center cursor-pointer">
-                    <i className="fas fa-sign-out-alt text-gray-300"></i>
+                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                    <i className="fas fa-sign-out-alt"></i>
                 </div>
             </div>
         </div>

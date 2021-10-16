@@ -15,10 +15,12 @@ function HeaderContent() {
 					<p className="white">
 						Special messaging application for medical staffs
 					</p>
-					<p className="black">
-						医療従事者は専用のメッセージングアプリがあるようになります。そこでは、情報を交換するために部門に分かれており、SMSまたは電話で突出する通知をすぐに送信できます。
+					<p className="mt-2 tracking-wide">
+						Healthcare professionals will have a dedicated messaging app.
+						There, they are divided into departments to exchange information,
+						and you can immediately send prominent notifications by SMS or phone.
 					</p>
-					<Secondarybutton name={"Register Now"} />
+					<Secondarybutton name={"Sign Up Now"} />
 				</div>
 			</div>
 			<div className="right-content">

@@ -8,9 +8,10 @@ function CardSection() {
 			<InnerLayout>
 				<div className="card-container">
 					<div className="card-left">
-						<h2 className="secondary-heading">専用メッセージングアプリ</h2>
+						<h2 className="secondary-heading">Dedicated messaging app</h2>
 						<p>
-							医療従事者だけ専用のメッセージングアプリ。アカウントはすべて事前承認されており、完全にプロフェッショナルです。
+							A messaging app dedicated to healthcare professionals only.
+							All accounts are pre-approved and fully professional.
 						</p>
 					</div>
 					<div className="card-right">
@@ -32,16 +33,16 @@ function CardSection() {
 					</div>
 					<div className="card-right">
 						<div className="">
-							<h2 className="secondary-heading">部門と学科に分かれる</h2>
-							<p>情報の管理と、送信する必要の情報の選択が簡単になります。</p>
+							<h2 className="secondary-heading">Divided into departments and departments</h2>
+							<p>It makes it easy to manage your information and select the information you need to send.</p>
 						</div>
 					</div>
 
 
 					<div className="card-left">
-						<h2 className="secondary-heading">予期せぬお知らせ送信できる</h2>
+						<h2 className="secondary-heading">Unexpected notifications can be sent</h2>
 						<p>
-							緊急の場合、SMSとモバイルを直接送信するメッセージングができます。
+							In case of emergency, you can send SMS and mobile directly.
 						</p>
 					</div>
 					<div className="card-right">

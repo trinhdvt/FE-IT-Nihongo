@@ -1,15 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    info: {
-        _id: "",
-        firstName: "Khôi",
-        lastName: "Trần",
-        role: 0
-    },
-    accessToken: "",
-    refreshToken: ""
-
+    info: {},
+    token: ""
 }
 
 const login = createSlice({
@@ -18,18 +11,16 @@ const login = createSlice({
     reducers: {
         onLogout: () => {
             return {
-                info: {
-                    _id: "",
-                    firstName: "",
-                    lastName: ""
-                },
-                accessToken: "",
-                refreshToken: ""
+                info: {},
+                token: ""
             }
         },
         onLogin: (state, action) => {
-            console.log(action.payload)
-            // return action.payload;
+            return {
+                ...state,
+                info: {...action.payload.info},
+                token: action.payload.token
+            };
         }
     }
 });

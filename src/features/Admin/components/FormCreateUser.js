@@ -1,16 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { authApi } from '../constants/admin-api';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import swal from 'sweetalert'
 
 function FormCreateUser(props) {
 
     const { closeModal } = props;
 
-    const [err, setErr] = useState(true);
+    const token = useSelector(auth => auth.Auth.token);
 
-    const { register, handleSubmit, reset } = useForm();
+    const schema = yup.object().shape({
+        name: yup.string().required().max(45),
+        hospitalId: yup.string().required(),
+        location: yup.string().required().max(255),
+        department: yup.string().required().max(45),
+        position: yup.string().required(),
+        channelId: yup.string().required()
+    })
 
-    const submitFormLogin = (data) => {
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
+    const submitFormCreateUser = (data) => {
+        const urlSearchParams = new URLSearchParams();
+        for (const [key, value] of Object.entries(data)) {
+            urlSearchParams.append(`${key}`, `${value}`);
+        }
+        
+        axios.post(authApi.DECODE, urlSearchParams, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res);
+                swal("Account successfully created!", `${res.data.code}`, "success");
+            })
+            .catch(err => console.log(err))
     }
 
     const CloseModal = () => {
@@ -27,63 +58,107 @@ function FormCreateUser(props) {
             </div>
 
             <div className="">
-                <form className="py-6 px-16 form-create-user shadow" onSubmit={handleSubmit(submitFormLogin)} >
+                <form className="py-6 px-16 form-create-user shadow" onSubmit={handleSubmit(submitFormCreateUser)} >
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Display Name:</p>
-                        <input className=""
-                            placeholder="Enter display name"
-                            type="text"
-                            {...register("displayName", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-6 flex items-center">
+                        <p className="font-medium w-1/3 text-gray-600">Display Name:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter display name"
+                                type="text"
+                                {...register("name")}
+                            />
+                            {errors.name &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.name.message}
+                                </p>
+                            }
+                        </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Hospital:</p>
-                        <input className=""
-                            placeholder="Enter hospital name"
-                            type="text"
-                            {...register("hospital", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-8 flex items-center ">
+                        <p className="font-medium w-1/3 text-gray-600">Hospital:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter hospital name"
+                                type="text"
+                                {...register("hospitalId")}
+                            />
+                            {errors.hospitalId &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.hospitalId.message}
+                                </p>
+                            }
+                        </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Location:</p>
-                        <input className=""
-                            placeholder="Enter location"
-                            type="text"
-                            {...register("location", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-8 flex items-center ">
+                        <p className="font-medium w-1/3 text-gray-600">Location:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter location"
+                                type="text"
+                                {...register("location")}
+                            />
+                            {errors.location &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.location.message}
+                                </p>
+                            }
+                        </div>
+
                     </div>
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Department:</p>
-                        <input className=""
-                            placeholder="Enter department"
-                            type="text"
-                            {...register("department", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-8 flex items-center ">
+                        <p className="font-medium w-1/3 text-gray-600">Department:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter department"
+                                type="text"
+                                {...register("department")}
+                            />
+                            {errors.department &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.department.message}
+                                </p>
+                            }
+                        </div>
+
                     </div>
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Position:</p>
-                        <input className=""
-                            placeholder="Enter position"
-                            type="text"
-                            {...register("position", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-8 flex items-center ">
+                        <p className="font-medium w-1/3 text-gray-600">Position:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter position"
+                                type="text"
+                                {...register("position")}
+                            />
+                            {errors.position &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.position.message}
+                                </p>
+                            }
+                        </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
-                        <p className="font-medium w-1/3">Channels:</p>
-                        <input className=""
-                            placeholder="Enter channels"
-                            type="text"
-                            {...register("name", { onChange: () => setErr(true) }, { required: true })}
-                        />
+                    <div className="mt-8 flex items-center ">
+                        <p className="font-medium w-1/3 text-gray-600">Channel:</p>
+                        <div className="w-full relative">
+                            <input
+                                placeholder="Enter channel"
+                                type="text"
+                                {...register("channelId")}
+                            />
+                            {errors.channelId &&
+                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                    {errors.channelId.message}
+                                </p>
+                            }
+                        </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    {/* <div className="mt-6 flex items-center ">
                         <p className="font-medium w-1/3">Code:</p>
 
                         <div className="flex items-center w-full">
@@ -96,7 +171,7 @@ function FormCreateUser(props) {
                                 Code
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
 
                     <div className="mt-6 flex items-center justify-end">
@@ -111,7 +186,7 @@ function FormCreateUser(props) {
                             type="submit"
                             className="justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         >
-                            Create Music
+                            Create User
                         </button>
                     </div>
 

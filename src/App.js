@@ -2,14 +2,14 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { ROUTES, PRIVATE_ROUTES_ADMIN, PRIVATE_ROUTES_MANAGER, PRIVATE_ROUTES_USER } from './routes';
 import Header from './components/header';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 function App() {
 
-	// const token = useSelector(auth => auth.Auth.accessToken);
-	const token = "";
-	const role = 2;
+	const token = useSelector(auth => auth.Auth.token);
+	const role = useSelector(auth => auth.Auth.info ? auth.Auth.info.role : "");
 	const isLoggedIn = () => {
-		return token === "";
+		return token !== "";
 	}
 
 	return (
@@ -42,7 +42,7 @@ const showRotesPrivateAdmin = (routes, isLoggedIn, role) => {
 				key={index}
 				path={route.path}
 				exact
-				render={props => (isLoggedIn && role === 3) ? <route.main {...props} /> :
+				render={props => (isLoggedIn && role === "ADMIN") ? <route.main {...props} /> :
 					<Redirect to={{
 						pathname: '',
 						state: { from: props.location }
@@ -62,7 +62,7 @@ const showRotesPrivateManager = (routes, isLoggedIn, role) => {
 				key={index}
 				path={route.path}
 				exact
-				render={props => (isLoggedIn && role === 2) ? <route.main {...props} /> :
+				render={props => (isLoggedIn && role === "MANAGER") ? <route.main {...props} /> :
 					<Redirect to={{
 						pathname: '',
 						state: { from: props.location }

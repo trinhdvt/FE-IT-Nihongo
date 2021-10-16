@@ -1,4 +1,4 @@
-import SignIn from './features/Auth/components/FormLogin';
+import SignIn from './features/Auth/pages/LoginPage';
 import SignUp from './features/Auth/components/FormRegister';
 import Home from './features/Home/page/Home';
 // import AccountSettings from './features/AccountSetting/AccountSettings';

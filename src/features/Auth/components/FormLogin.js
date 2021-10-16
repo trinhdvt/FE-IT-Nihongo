@@ -7,6 +7,8 @@ import { onLogin } from '../reducers/Auth';
 import { useHistory } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { authApi } from '../constants/auth-api';
+import jwt_decode from 'jwt-decode';
 
 function FormLogin(props) {
 
@@ -19,26 +21,37 @@ function FormLogin(props) {
         resolver: yupResolver(schema),
     });
 
+    const [mess, setMess] = useState();
+
+    const [err, setErr] = useState(false);
+
+
     const dispatch = useDispatch();
 
     const history = useHistory();
 
     const submitFormLogin = (data) => {
+        const urlSearchParams = new URLSearchParams();
 
-        // axios.post('http://localhost:4000/auth/login', {
-        //     username: data.username,
-        //     password: data.password
-        // }).then(res => {
-        //     if (res.data.err) {
-        //         setMess(res.data.err);
-        //         setErr(false);
-        //     } else {
-        //         dispatch(onLogin(res.data));
-        //         history.push('/');
-        //     }
-        // }).catch(err => console.log(err))
-        //dispatch(onLogin(data));
-        console.log(data)
+        for (const [key, value] of Object.entries(data)) {
+            urlSearchParams.append(`${key}`, `${value}`);
+        }
+
+        axios.post(authApi.LOGIN, urlSearchParams)
+            .then(res => {
+                const info = jwt_decode(res.data.token);
+                dispatch(onLogin({
+                    token: res.data.token,
+                    info: info
+                }));
+                history.push('/');
+            })
+            .catch(err => {
+                if (err.response) {
+                    setMess(err.response.data.message);
+                    setErr(true);
+                }
+            })
     }
 
     return (
@@ -73,6 +86,8 @@ function FormLogin(props) {
                         {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
 
+                    {err && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
+
                     <div className="flex items-center my-4">
                         <div className="flex items-center">
                             <input name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
@@ -89,7 +104,8 @@ function FormLogin(props) {
                         </div>
                     </div>
 
-                    <button className="text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                    <button
+                        className="text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
                         type="submit"
                     >
                         Sign in
