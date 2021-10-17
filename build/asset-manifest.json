@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/FE-IT-Nihongo/static/css/main.4d586507.chunk.css",
+    "main.js": "/FE-IT-Nihongo/static/js/main.0ed4e54d.chunk.js",
+    "main.js.map": "/FE-IT-Nihongo/static/js/main.0ed4e54d.chunk.js.map",
+    "runtime-main.js": "/FE-IT-Nihongo/static/js/runtime-main.ee8805ae.js",
+    "runtime-main.js.map": "/FE-IT-Nihongo/static/js/runtime-main.ee8805ae.js.map",
+    "static/js/2.773dc898.chunk.js": "/FE-IT-Nihongo/static/js/2.773dc898.chunk.js",
+    "static/js/2.773dc898.chunk.js.map": "/FE-IT-Nihongo/static/js/2.773dc898.chunk.js.map",
+    "index.html": "/FE-IT-Nihongo/index.html",
+    "static/css/main.4d586507.chunk.css.map": "/FE-IT-Nihongo/static/css/main.4d586507.chunk.css.map",
+    "static/js/2.773dc898.chunk.js.LICENSE.txt": "/FE-IT-Nihongo/static/js/2.773dc898.chunk.js.LICENSE.txt",
+    "static/media/arrow.6e8a628b.svg": "/FE-IT-Nihongo/static/media/arrow.6e8a628b.svg",
+    "static/media/bg.b58e4072.svg": "/FE-IT-Nihongo/static/media/bg.b58e4072.svg",
+    "static/media/index.css": "/FE-IT-Nihongo/static/media/bgChat.de17588a.jpg",
+    "static/media/message_blue.c374abb9.svg": "/FE-IT-Nihongo/static/media/message_blue.c374abb9.svg",
+    "static/media/message_pink.f957327e.svg": "/FE-IT-Nihongo/static/media/message_pink.f957327e.svg",
+    "static/media/phone.84e7beea.svg": "/FE-IT-Nihongo/static/media/phone.84e7beea.svg",
+    "static/media/ring_orange.be9e2386.svg": "/FE-IT-Nihongo/static/media/ring_orange.be9e2386.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ee8805ae.js",
+    "static/js/2.773dc898.chunk.js",
+    "static/css/main.4d586507.chunk.css",
+    "static/js/main.0ed4e54d.chunk.js"
+  ]
+}
