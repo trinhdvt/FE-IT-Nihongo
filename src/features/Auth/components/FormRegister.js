@@ -105,7 +105,7 @@ function FormRegister(props) {
                     <button className="mt-4 text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
                         type="submit"
                     >
-                        Register
+                        Sign Up
                     </button>
                 </form>
             </div>
