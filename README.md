@@ -1,3 +1,5 @@
+[![FE-CI/CD](https://github.com/trinhdvt/FE-IT-Nihongo/actions/workflows/fe-cicd.yml/badge.svg?branch=master&event=deployment_status)](https://github.com/trinhdvt/FE-IT-Nihongo/actions/workflows/fe-cicd.yml)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
