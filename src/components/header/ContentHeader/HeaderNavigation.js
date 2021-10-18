@@ -48,7 +48,7 @@ function HeaderNavigation(props) {
                 <div className="flex items-center py-4 justify-between">
                     <Link to="/">
                         <img
-                            className={`h-12 w-auto cursor-pointer ${location.pathname === '/' ? 'animate-pulse' : ''}`}
+                            className={`logo h-12 w-auto cursor-pointer ${location.pathname === '/' ? 'animate-pulse' : ''}`}
                             src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                             alt="Workflow"
                         />
@@ -84,6 +84,12 @@ function HeaderNavigation(props) {
                                 <div className="divide-y divide-fuchsia-300" role="none">
                                     <Link to={`/${role}/user-management`} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 rounded-t-md transition duration-300 ease-in-out">
                                         User Manager
+                                    </Link>
+                                    <Link to={`/${role}/channel-management`} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out">
+                                        Channel Manager
+                                    </Link>
+                                    <Link to={`/${role}/help-management`} className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out">
+                                        Help Manager
                                     </Link>
                                     <button className="text-gray-700 w-full rounded-b-md text-left px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out"
                                         onClick={Logout}

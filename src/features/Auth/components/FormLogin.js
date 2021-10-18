@@ -44,7 +44,7 @@ function FormLogin(props) {
                     token: res.data.token,
                     info: info
                 }));
-                history.push('/');
+                history.push(`/${info.role.toLowerCase()}/user-management`);
             })
             .catch(err => {
                 if (err.response) {
@@ -105,7 +105,7 @@ function FormLogin(props) {
                     </div>
 
                     <button
-                        className="text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                        className="btn-login"
                         type="submit"
                     >
                         Sign in

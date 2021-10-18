@@ -1,0 +1,45 @@
+.btn-signUpNow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Nunito", sans-serif;
+
+  padding: 0.8em 1.3em;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  background-color: #16194f;
+  color: white;
+
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease-in-out;
+}
+
+.btn-signUpNow::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  bottom: 100%;
+  right: 100%;
+  width: 1.5em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: #3cefff;
+  transform-origin: center;
+  transform: translate3d(50%, 50%, 0) scale3d(0, 0, 0);
+  transition: transform 0.45s ease-in-out;
+}
+
+.btn-signUpNow:hover {
+  cursor: pointer;
+  color: #161616;
+}
+
+.btn-signUpNow:hover::before {
+  transform: translate3d(50%, 50%, 0) scale3d(15, 15, 15);
+}

@@ -25,7 +25,7 @@ function Admin(props) {
             setIsOpenUser(true);
     }
 
-    const [urlName, setUrlName] = useState("user-management");
+    const [urlName, setUrlName] = useState(locationName);
 
     const onChangeSelect = (e) => {
         setUrlName(e.target.value);
