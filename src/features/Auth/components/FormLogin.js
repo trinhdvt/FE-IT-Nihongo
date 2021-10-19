@@ -94,7 +94,7 @@ function FormLogin(props) {
 
                     {err && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
-                    <div className="flex items-center my-4">
+                    {/* <div className="flex items-center my-4">
                         <div className="flex items-center">
                             <input name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
 
@@ -108,10 +108,10 @@ function FormLogin(props) {
                                 Forgot your password?
                             </span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <button
-                        className="btn-login"
+                        className="btn-login mt-6"
                         type="submit"
                     >
                         Sign in
