@@ -25,6 +25,7 @@ function FormLogin(props) {
 
     const [err, setErr] = useState(false);
 
+    const [showPass, setShowPass] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -67,7 +68,7 @@ function FormLogin(props) {
                     <div>
                         <label htmlFor="username" className="font-medium">Username</label>
                         <input
-                            className="focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                            className="text"
                             type="text"
                             id="username"
                             {...register("username")}
@@ -77,12 +78,17 @@ function FormLogin(props) {
 
                     <div className="mt-6">
                         <label htmlFor="password" className="font-medium">Password</label>
-                        <input
-                            id="password"
-                            className="mb-1 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="password"
-                            {...register("password")}
-                        />
+                        <div className="password flex items-center">
+                            <input
+                                className="w-full focus:outline-none focus:border-none"
+                                id="password"
+                                type={`${showPass ? 'text' : 'password'}`}
+                                {...register("password")}
+                            />
+                            <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
+                                onClick={() => setShowPass(!showPass)}
+                            ></i>
+                        </div>
                         {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
 

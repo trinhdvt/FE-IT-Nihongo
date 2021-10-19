@@ -16,8 +16,7 @@
   color: #504e4e;
 }
 
-.auth-form input[type="text"],
-input[type="password"] {
+.auth-form .text {
   background: #fff;
   border: #ddd 1px solid;
   border-radius: 7px;
@@ -30,8 +29,27 @@ input[type="password"] {
   transition-duration: 300ms;
 }
 
-.auth-form input[type="text"]:focus,
-input[type="password"]:focus {
+.auth-form .text:focus {
+  box-shadow: 0px 0px 8px #ddd;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  outline: none;
+}
+
+.auth-form .password {
+  background: #fff;
+  border: #ddd 1px solid;
+  border-radius: 7px;
+  height: 38px;
+  width: 100%;
+  margin-top: 5px;
+  padding: 0 15px;
+  color: #555555;
+  box-shadow: 0 0 4px #ddd;
+  transition-duration: 300ms;
+}
+
+.auth-form .password:focus {
   box-shadow: 0px 0px 8px #ddd;
   border: 1px solid #ddd;
   border-radius: 7px;

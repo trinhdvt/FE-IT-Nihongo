@@ -23,6 +23,8 @@ function FormRegister(props) {
 
     const [checkCode, setCheckCode] = useState();
 
+    const [showPass, setShowPass] = useState(false);
+
     const submitFormRegister = (data) => {
         console.log(data)
         // axios.post('http://localhost:4000/auth/sign-up', {
@@ -48,33 +50,11 @@ function FormRegister(props) {
                 <form className="mt-4 p-4 auth-form shadow-md" onSubmit={handleSubmit(submitFormRegister)}>
 
                     <div className="mt-6">
-                        <label htmlFor="username" className="font-medium">Username</label>
-                        <input
-                            className="focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="text"
-                            id="username"
-                            {...register("username")}
-                        />
-                        {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
-                    </div>
-
-                    <div className="mt-6">
-                        <label htmlFor="password" className="font-medium">Password</label>
-                        <input
-                            id="password"
-                            className="mb-1 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="password"
-                            {...register("password")}
-                        />
-                        {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
-                    </div>
-
-                    <div className="mt-6">
                         <label htmlFor="code" className="font-medium">Given Code</label>
                         <div className="flex items-center">
                             <input
                                 id="code"
-                                className="mr-4 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                                className="mr-4 text"
                                 type="text"
                                 {...register("code")}
                             />
@@ -86,20 +66,31 @@ function FormRegister(props) {
                         {checkCode === true && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
                     </div>
 
-                    <div className="mt-4">
-                        <div className="flex items-center">
-                            <input
-                                {...register("acceptConditions")}
-                                type="checkbox"
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <span className="ml-2 block text-sm font-medium text-gray-400">
-                                I accept Terms and Conditions
-                            </span>
-                        </div>
-                        {errors.acceptConditions &&
-                            <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">If you do not agree to the conditions, you cannot continue</p>}
+                    <div className="mt-6">
+                        <label htmlFor="username" className="font-medium">Username</label>
+                        <input
+                            className="text"
+                            type="text"
+                            id="username"
+                            {...register("username")}
+                        />
+                        {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
+                    </div>
 
+                    <div className="mt-6">
+                        <label htmlFor="password" className="font-medium">Password</label>
+                        <div className="password flex items-center">
+                            <input
+                                className="w-full focus:outline-none focus:border-none"
+                                id="password"
+                                type={`${showPass ? 'text' : 'password'}`}
+                                {...register("password")}
+                            />
+                            <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
+                                onClick={() => setShowPass(!showPass)}
+                            ></i>
+                        </div>
+                        {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
 
                     <button className="mt-4 text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
