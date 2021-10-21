@@ -28,6 +28,9 @@ function App() {
 						{
 							showRotesPrivateManager(PRIVATE_ROUTES_MANAGER, isLoggedIn(), role)
 						}
+						{
+							showRotesPrivateUser(PRIVATE_ROUTES_USER, isLoggedIn(), role)
+						}
 					</Switch>
 				</div>
 			</div>
@@ -74,25 +77,25 @@ const showRotesPrivateManager = (routes, isLoggedIn, role) => {
 	return result;
 }
 
-// const showRotesPrivateUser = (routes, isLoggedIn, role) => {
-// 	var result = null;
-// 	if (routes.length > 0) {
-// 		result = routes.map((route, index) => {
-// 			return (<Route
-// 				key={index}
-// 				path={route.path}
-// 				exact
-// 				render={props => (isLoggedIn && role === 1) ? <route.main {...props} /> :
-// 					<Redirect to={{
-// 						pathname: '',
-// 						state: { from: props.location }
-// 					}} />}
-// 			/>)
+const showRotesPrivateUser = (routes, isLoggedIn, role) => {
+	var result = null;
+	if (routes.length > 0) {
+		result = routes.map((route, index) => {
+			return (<Route
+				key={index}
+				path={route.path}
+				exact
+				render={props => (isLoggedIn && role === 'USER') ? <route.main {...props} /> :
+					<Redirect to={{
+						pathname: '',
+						state: { from: props.location }
+					}} />}
+			/>)
 
-// 		})
-// 	}
-// 	return result;
-// }
+		})
+	}
+	return result;
+}
 
 
 const showRotesPublic = (routes) => {

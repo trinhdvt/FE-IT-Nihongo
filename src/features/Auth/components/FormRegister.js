@@ -14,7 +14,6 @@ function FormRegister(props) {
         code: yup.string().required().max(36),
         username: yup.string().required().max(15),
         password: yup.string().required().min(6).max(32),
-        acceptConditions: yup.boolean().isTrue()
     }).required();
 
     const { register, handleSubmit, formState: { errors } } = useForm({
