@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { onLogout } from '../../../features/Auth/reducers/Auth';
 import './HeaderNavigation.css';
+import { onEditProfile } from '../../../reducers/EditProfile';
 
 function HeaderNavigation(props) {
 
@@ -83,37 +84,74 @@ function HeaderNavigation(props) {
                             </div>
 
                             {dropdownUser && <div className="z-10 origin-top-right absolute right-0 mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="divide-y divide-fuchsia-300" role="none">
-                                    <Link
-                                        to={`/${role}/user-management`}
-                                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 rounded-t-md transition duration-300 ease-in-out flex items-center"
-                                    >
-                                        <i className="fas fa-users-cog w-1/5"></i>
-                                        <span>User Manager</span>
-                                    </Link>
-                                    <Link
-                                        to={`/${role}/channel-management`}
-                                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
-                                    >
-                                        <i className="fas fa-server w-1/5"></i>
-                                        <span>Channel Manager</span>
-                                    </Link>
-                                    <Link
-                                        to={`/${role}/help-management`}
-                                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
-                                    >
-                                        <i class="fas fa-medkit w-1/5"></i>
-                                        <span>Help Manager</span>
+                                {role !== "user" ?
+                                    <div className="divide-y divide-fuchsia-300" role="none">
+                                        <Link
+                                            to={`/${role}/user-management`}
+                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 rounded-t-md transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <i className="fas fa-users-cog w-1/5"></i>
+                                            <span>User Manager</span>
+                                        </Link>
+                                        <Link
+                                            to={`/${role}/channel-management`}
+                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <i className="fas fa-server w-1/5"></i>
+                                            <span>Channel Manager</span>
+                                        </Link>
+                                        <Link
+                                            to={`/${role}/help-management`}
+                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <i class="fas fa-medkit w-1/5"></i>
+                                            <span>Help Manager</span>
 
-                                    </Link>
-                                    <button
-                                        className="text-gray-700 w-full rounded-b-md text-left px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
-                                        onClick={Logout}
-                                    >
-                                        <i class="fas fa-sign-out-alt w-1/5"></i>
-                                        <span>Sign out</span>
-                                    </button>
-                                </div>
+                                        </Link>
+                                        <button
+                                            className="text-gray-700 w-full rounded-b-md text-left px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                            onClick={Logout}
+                                        >
+                                            <i class="fas fa-sign-out-alt w-1/5"></i>
+                                            <span>Sign out</span>
+                                        </button>
+                                    </div> :
+                                    <div className="divide-y divide-fuchsia-300" role="none">
+                                        <Link
+                                            to={`/${role}/profile`}
+                                            className="cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 rounded-t-md transition duration-300 ease-in-out flex items-center"
+                                            onClick={() => {
+                                                dispatch(onEditProfile());
+                                                setDropdownUser(!dropdownUser);
+                                            }}
+                                        >
+                                            <i className="fas fa-user-edit w-1/5"></i>
+                                            <span>Edit Profile</span>
+                                        </Link>
+                                        <Link
+                                            to={`/${role}/chat`}
+                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <i className="fas fa-server w-1/5"></i>
+                                            <span>Chat</span>
+                                        </Link>
+                                        <Link
+                                            to={`/${role}/help`}
+                                            className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <i class="fas fa-medkit w-1/5"></i>
+                                            <span>Help Manager</span>
+
+                                        </Link>
+                                        <button
+                                            className="text-gray-700 w-full rounded-b-md text-left px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
+                                            onClick={Logout}
+                                        >
+                                            <i class="fas fa-sign-out-alt w-1/5"></i>
+                                            <span>Sign out</span>
+                                        </button>
+                                    </div>
+                                }
                             </div>}
                         </div>
                     }

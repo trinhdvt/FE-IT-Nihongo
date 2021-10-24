@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
 import TableManagement from '../components/TableManagement';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
@@ -32,6 +32,10 @@ function Admin(props) {
         setUrlName(e.target.value);
         history.push(`/admin/${e.target.value}`)
     }
+
+    useEffect(() => {
+        setUrlName(locationName);
+    },[locationName])
 
     if (token === "") {
         return <Redirect to="/login" />

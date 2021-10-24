@@ -2,16 +2,18 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // import { authApi } from '../constants/admin-api';
 // import axios from 'axios';
 // import { useSelector } from 'react-redux';
 // import swal from 'sweetalert'
-
+import {closeEditProfile} from '../../../reducers/EditProfile';
 function FormEditProfile(props) {
 
-    const { closeModal } = props;
-
     // const token = useSelector(auth => auth.Auth.token);
+
+    const dispatch = useDispatch();
 
     const schema = yup.object().shape({
         name: yup.string().required().max(45),
@@ -25,46 +27,20 @@ function FormEditProfile(props) {
         resolver: yupResolver(schema),
     });
 
-    const submitFormCreateUser = (data) => {
-        // const urlSearchParams = new URLSearchParams();
-        // for (const [key, value] of Object.entries(data)) {
-        //     urlSearchParams.append(`${key}`, `${value}`);
-        // }
+    const submitFormUpdateProfile = (data) => {
 
-        // axios.post(authApi.DECODE, urlSearchParams, {
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`
-        //     }
-        // })
-        //     .then(res => {
-        //         console.log(res);
-        //         swal("Account successfully created!", `${res.data.code}`, "success");
-        //     })
-        //     .catch(err => console.log(err))
-        CloseModal();
-    }
-
-    const CloseModal = () => {
-        console.log('ok')
-        reset();
-        closeModal();
     }
 
     return (
         <div className="absolute top-0 left-0 w-full h-full shadow rounded p-4 border border-gray-300 bg-white">
-
-            <form className=" form-create-user" onSubmit={handleSubmit(submitFormCreateUser)} >
-
-                <div className="flex">
-                    <button
-                        type="submit"
-                        className="ml-auto justify-center px-6 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    >
-                        Save
-                    </button>
-                </div>
+            <div className="absolute right-6 top-3 text-gray-600 cursor-pointer hover:text-gray-800 transition duration-300 ease-in-out text-xl"
+                onClick={() => dispatch(closeEditProfile())}
+            >
+                <i className="fas fa-times"> </i>
+            </div>
+            <form className=" form-create-user" onSubmit={handleSubmit(submitFormUpdateProfile)} >
                 <div className="px-10">
-                    <div className="mt-6 flex items-center">
+                    <div className="mt-12 flex items-center">
                         <p className="font-medium w-1/3 text-gray-600">Display Name:</p>
                         <div className="w-full relative">
                             <input
@@ -144,6 +120,21 @@ function FormEditProfile(props) {
                                 </p>
                             }
                         </div>
+                    </div>
+
+                    <div className="text-right mt-6">
+                        <button
+                            type="reset"
+                            className="mr-4 justify-center px-6 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="submit"
+                            className="justify-center px-6 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        >
+                            Save
+                        </button>
                     </div>
 
                 </div>

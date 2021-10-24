@@ -178,6 +178,7 @@ function FormCreateUser(props) {
                     <div className="mt-6 flex items-center justify-end">
                         <button
                             type="reset"
+                            onClick={() => setCode("")}
                             className="mr-4 justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         >
                             Reset

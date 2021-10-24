@@ -1,6 +1,6 @@
 import React from 'react';
 import FormCreateHelp from './FormCreateHelp';
-import FormCreateUser from './FormCreateUser';
+import FormCreateUser from '../../Admin/components/FormCreateUser';
 
 function TableManagement(props) {
 

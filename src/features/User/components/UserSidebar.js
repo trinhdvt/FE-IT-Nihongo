@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function UserSidebar(props) {
 
@@ -140,9 +141,11 @@ function UserSidebar(props) {
             </div>
 
             <div className="absolute bottom-0 px-3 py-6 border-t border-gray-300 w-full grid grid-cols-4 gap-4" >
-                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                <Link
+                    to="/user/profile"
+                    className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
                     <i className="fas fa-user"></i>
-                </div>
+                </Link>
 
                 <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
                     <i className="fas fa-user-friends"></i>

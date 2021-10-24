@@ -13,7 +13,6 @@ function FormRegister(props) {
     const history = useHistory();
 
     const schema = yup.object().shape({
-        code: yup.string().required().max(36),
         username: yup.string().required().max(15),
         password: yup.string().required().min(6).max(32),
     }).required();
@@ -56,7 +55,10 @@ function FormRegister(props) {
                         });
                 })
                 .catch(err => {
-                    console.log(err)
+                    if (err.response) {
+                        setMess(err.response.data.message);
+                        setErr(true);
+                    }
                 })
         } else {
             setMess("Please verify the code!!!");
@@ -69,9 +71,9 @@ function FormRegister(props) {
             let code = watchAllFields.code
             axios.get(authApi.CHECK_CODE(code))
                 .then(() => setCheckCode(true))
-                .catch(setCheckCode(false))
+                .catch(() => setCheckCode(false))
         } catch (error) {
-            console.log(error)
+            // setCheckCode(false)
         }
 
     }
@@ -85,8 +87,7 @@ function FormRegister(props) {
 
                 <p className="text-center font-xs text-gray-400 tracking-tighter">Get your free account now.</p>
 
-                <form className="mt-4 p-4 auth-form shadow-md" onSubmit={handleSubmit(submitFormRegister)}>
-
+                <div className="mt-4 p-4 auth-form shadow-md">
                     <div className="mt-6">
                         <label htmlFor="code" className="font-medium">Given Code</label>
                         <div className="flex items-center">
@@ -100,44 +101,46 @@ function FormRegister(props) {
                                 Verify
                             </button>
                         </div>
-                        {(errors.code) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">code is a required field</p>}
-                        {checkCode === true && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
+                        {checkCode === false && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">invalid code</p>}
+                        {checkCode && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
                     </div>
-
-                    <div className="mt-6">
-                        <label htmlFor="username" className="font-medium">Username</label>
-                        <input
-                            className="text"
-                            type="text"
-                            id="username"
-                            {...register("username")}
-                        />
-                        {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
-                    </div>
-
-                    <div className="mt-6">
-                        <label htmlFor="password" className="font-medium">Password</label>
-                        <div className="password flex items-center">
+                    <form className="" onSubmit={handleSubmit(submitFormRegister)}>
+                        <div className="mt-6">
+                            <label htmlFor="username" className="font-medium">Username</label>
                             <input
-                                className="w-full focus:outline-none focus:border-none"
-                                id="password"
-                                type={`${showPass ? 'text' : 'password'}`}
-                                {...register("password")}
+                                className="text"
+                                type="text"
+                                id="username"
+                                {...register("username")}
                             />
-                            <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
-                                onClick={() => setShowPass(!showPass)}
-                            ></i>
+                            {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
                         </div>
-                        {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
-                    </div>
-                    {err && <p className="text-sm mt-2 text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
-                    <button className="mt-8 font-medium text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
-                        type="submit"
-                    >
-                        Sign Up
-                    </button>
-                </form>
+                        <div className="mt-6">
+                            <label htmlFor="password" className="font-medium">Password</label>
+                            <div className="password flex items-center">
+                                <input
+                                    className="w-full focus:outline-none focus:border-none"
+                                    id="password"
+                                    type={`${showPass ? 'text' : 'password'}`}
+                                    {...register("password")}
+                                />
+                                <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
+                                    onClick={() => setShowPass(!showPass)}
+                                ></i>
+                            </div>
+                            {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
+                        </div>
+                        {err && <p className="text-sm mt-2 text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
+
+                        <button className="mt-8 font-medium text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                            type="submit"
+                        >
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
 
