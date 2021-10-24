@@ -140,7 +140,7 @@ function HeaderNavigation(props) {
                                             className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
                                         >
                                             <i class="fas fa-medkit w-1/5"></i>
-                                            <span>Help Manager</span>
+                                            <span>Help</span>
 
                                         </Link>
                                         <button
