@@ -5,6 +5,8 @@ import { useHistory } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import axios from 'axios';
+import { authApi } from '../constants/auth-api';
+import swal from 'sweetalert';
 
 function FormRegister(props) {
 
@@ -16,25 +18,62 @@ function FormRegister(props) {
         password: yup.string().required().min(6).max(32),
     }).required();
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
+
+    const watchAllFields = watch();
 
     const [checkCode, setCheckCode] = useState();
 
     const [showPass, setShowPass] = useState(false);
 
+    const [mess, setMess] = useState();
+
+    const [err, setErr] = useState(false);
+
     const submitFormRegister = (data) => {
-        console.log(data)
-        // axios.post('http://localhost:4000/auth/sign-up', {
-        //     ...data
-        // }).then(() => {
-        //     history.push('/login');
-        // }).catch(err => console.log(err))
+        if (checkCode) {
+            const urlSearchParams = new URLSearchParams();
+
+            for (const [key, value] of Object.entries(data)) {
+                urlSearchParams.append(`${key}`, `${value}`);
+            }
+
+            axios.post(authApi.SIGNUP, urlSearchParams)
+                .then(res => {
+                    swal({
+                        title: "Account successfully created!",
+                        text: "Do you want to go back to the login page?",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                history.push('/login')
+                            }
+                        });
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            setMess("Please verify the code!!!");
+            setErr(true);
+        }
     }
 
     const CheckCode = () => {
-        setCheckCode(true);
+        try {
+            let code = watchAllFields.code
+            axios.get(authApi.CHECK_CODE(code))
+                .then(() => setCheckCode(true))
+                .catch(setCheckCode(false))
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     return (
@@ -61,7 +100,7 @@ function FormRegister(props) {
                                 Verify
                             </button>
                         </div>
-                        {(errors.code || checkCode === false) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.code.message}</p>}
+                        {(errors.code) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">code is a required field</p>}
                         {checkCode === true && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
                     </div>
 
@@ -91,8 +130,9 @@ function FormRegister(props) {
                         </div>
                         {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
+                    {err && <p className="text-sm mt-2 text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
-                    <button className="mt-4 text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                    <button className="mt-8 font-medium text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
                         type="submit"
                     >
                         Sign Up

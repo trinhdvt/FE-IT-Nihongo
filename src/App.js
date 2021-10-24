@@ -2,12 +2,13 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { ROUTES, PRIVATE_ROUTES_ADMIN, PRIVATE_ROUTES_MANAGER, PRIVATE_ROUTES_USER } from './routes';
 import Header from './components/header';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 function App() {
 
 	const token = useSelector(auth => auth.Auth.token);
+
 	const role = useSelector(auth => auth.Auth.info ? auth.Auth.info.role : "");
+
 	const isLoggedIn = () => {
 		return token !== "";
 	}

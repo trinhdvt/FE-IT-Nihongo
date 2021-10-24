@@ -3,6 +3,7 @@ import ManagerSidebar from '../components/ManagerSidebar';
 import TableManagement from '../components/TableManagement';
 import { useParams, useHistory } from 'react-router-dom';
 import './Manager.css';
+import CodeManagement from '../../Admin/components/CodeManagement'
 
 function Manager(props) {
     const locationName = useParams().name;
@@ -51,6 +52,7 @@ function Manager(props) {
                             <option value="user-management">User</option>
                             <option value="channel-management">Channel</option>
                             <option value="help-management">Help</option>
+                            <option value="code-management">Code</option>
                         </select>
 
                         <div className="flex items-center ml-8 bg-white border border-gray-400 rounded-full px-2">
@@ -66,6 +68,7 @@ function Manager(props) {
                     {locationName === "user-management" && <TableManagement type="user-management" arr={[]} isOpen={isOpenUser} closeModal={closeModal} />}
                     {locationName === "channel-management" && <TableManagement type="channel-management" arr={[]} />}
                     {locationName === "help-management" && <TableManagement type="help-management" arr={[]} isOpen={isOpenHelp} closeModal={closeModal} />}
+                    {locationName === "code-management" && <CodeManagement />}
                 </div>
 
             </div >

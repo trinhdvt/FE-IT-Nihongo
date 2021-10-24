@@ -4,6 +4,7 @@ import TableManagement from '../components/TableManagement';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
 import './Admin.css'
 import { useSelector } from 'react-redux';
+import CodeManagement from '../components/CodeManagement';
 
 function Admin(props) {
 
@@ -53,6 +54,7 @@ function Admin(props) {
                                 <option value="user-management">User</option>
                                 <option value="channel-management">Channel</option>
                                 <option value="help-management">Help</option>
+                                <option value="code-management">Code</option>
                             </select>
 
                             <div className="flex items-center ml-8 bg-white border border-gray-400 rounded-full px-2">
@@ -68,6 +70,7 @@ function Admin(props) {
                         {locationName === "user-management" && <TableManagement type="user-management" arr={[]} isOpen={isOpenUser} closeModal={closeModal} />}
                         {locationName === "channel-management" && <TableManagement type="channel-management" arr={[]} />}
                         {locationName === "help-management" && <TableManagement type="help-management" arr={[]} />}
+                        {locationName === "code-management" && <CodeManagement />}
                     </div>
 
                 </div >

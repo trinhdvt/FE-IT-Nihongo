@@ -32,6 +32,7 @@ function FormLogin(props) {
     const history = useHistory();
 
     const submitFormLogin = (data) => {
+
         const urlSearchParams = new URLSearchParams();
 
         for (const [key, value] of Object.entries(data)) {
@@ -40,12 +41,16 @@ function FormLogin(props) {
 
         axios.post(authApi.LOGIN, urlSearchParams)
             .then(res => {
+                let path;
                 const info = jwt_decode(res.data.token);
                 dispatch(onLogin({
                     token: res.data.token,
                     info: info
                 }));
-                history.push(`/${info.role.toLowerCase()}/user-management`);
+                if(info.role === "USER") path = `/${info.role.toLowerCase()}/chat`;
+                else path = `/${info.role.toLowerCase()}/user-management`;
+                
+                history.push(path);
             })
             .catch(err => {
                 if (err.response) {

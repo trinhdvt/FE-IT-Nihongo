@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 
-function ManagerSidebar(props) {
+function UserSidebar(props) {
 
-    const [option, setOption] = useState("channel");
+    const { locationName } = props;
+
+    const history = useHistory();
+
+    const [option, setOption] = useState(locationName);
 
     const changeOption = (e) => {
         setOption(e.target.value)
+        history.push(`/user/${e.target.value}`)
     }
 
     return (
@@ -14,9 +20,9 @@ function ManagerSidebar(props) {
                 <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 mr-2 font-medium text-gray-700">
                     <span>Avatar</span>
                 </div>
-        
+
                 <div>
-                    <p className="font-bold text-gray-600">MANAGER</p>
+                    <p className="font-bold text-gray-600">USER</p>
 
                     <select name="" id="" className="focus:outline-none border border-gray-300 px-2 rounded-full text-sm">
                         <option value="" className="">
@@ -38,7 +44,7 @@ function ManagerSidebar(props) {
                         onChange={changeOption}
                         className="cursor-pointer focus:outline-none border border-gray-400 rounded-lg px-2 py-1 mr-2"
                     >
-                        <option value="channel">Channel</option>
+                        <option value="chat">Chat</option>
                         <option value="help">Help</option>
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
@@ -48,19 +54,19 @@ function ManagerSidebar(props) {
                 </div>
 
                 {
-                    option === "channel" ?
+                    option === "chat" ?
                         <div className="mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Hospital</p>
+                            <p className="text-lg text-gray-700 font-medium">Channel</p>
 
                             <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">RandomHospital1</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital2</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital3</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital4</li>
+                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#clinical_department</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#emergency_department</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group1</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group2</li>
                             </ul>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
-                            
+
                             <div className="mt-2 cursor-pointer">
                                 <div className="p-2 bg-gray-200 flex item-center rounded-lg">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
@@ -154,4 +160,4 @@ function ManagerSidebar(props) {
     );
 }
 
-export default ManagerSidebar;
+export default UserSidebar;
