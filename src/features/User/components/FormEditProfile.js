@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 // import { authApi } from '../constants/admin-api';
 // import axios from 'axios';
@@ -28,7 +28,7 @@ function FormEditProfile(props) {
     });
 
     const submitFormUpdateProfile = (data) => {
-
+        reset();
     }
 
     return (

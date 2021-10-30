@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UserSidebar from '../components/UserSidebar';
 import { useParams } from 'react-router-dom';
 import './User.css';
@@ -8,6 +8,8 @@ import FormProfile from '../components/FormProfile';
 function User(props) {
 
     const locationName = useParams().name;
+
+    const [detailHelp, setDetailHelp] = useState(false);
 
     return (
         <div className="flex bg-gray-50 max-w-7xl mx-auto px-4 h-full py-4">

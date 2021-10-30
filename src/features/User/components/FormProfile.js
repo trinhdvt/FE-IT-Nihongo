@@ -8,7 +8,7 @@ function FormProfile(props) {
 
     const dispatch = useDispatch();
 
-    const info = useSelector(Info => Info.Auth.info);
+    // const info = useSelector(Info => Info.Auth.info);
 
     const checkEdit = useSelector(check => check.EditProfile);
 

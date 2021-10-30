@@ -40,7 +40,7 @@ function CodeManagement(props) {
         }
 
         fetch_List_Code();
-    }, [])
+    }, [token])
 
     const covertListCode = (listCode) => {
         var result = [];

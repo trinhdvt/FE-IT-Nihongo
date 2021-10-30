@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 
 function ManagerSidebar(props) {
 
-    const [option, setOption] = useState("channel");
+    const { optionSidebar, changeOptionSidebar } = props;
+
+    const [option, setOption] = useState(optionSidebar);
 
     const changeOption = (e) => {
-        setOption(e.target.value)
+        setOption(e.target.value);
+        changeOptionSidebar(e.target.value);
     }
 
     return (
@@ -14,7 +17,7 @@ function ManagerSidebar(props) {
                 <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-300 mr-2 font-medium text-gray-700">
                     <span>Avatar</span>
                 </div>
-        
+
                 <div>
                     <p className="font-bold text-gray-600">MANAGER</p>
 
@@ -60,7 +63,7 @@ function ManagerSidebar(props) {
                             </ul>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
-                            
+
                             <div className="mt-2 cursor-pointer">
                                 <div className="p-2 bg-gray-200 flex item-center rounded-lg">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
