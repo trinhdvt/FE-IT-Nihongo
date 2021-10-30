@@ -47,9 +47,9 @@ function FormLogin(props) {
                     token: res.data.token,
                     info: info
                 }));
-                if(info.role === "USER") path = `/${info.role.toLowerCase()}/chat`;
+                if (info.role === "USER") path = `/${info.role.toLowerCase()}/chat`;
                 else path = `/${info.role.toLowerCase()}/user-management`;
-                
+
                 history.push(path);
             })
             .catch(err => {
@@ -74,9 +74,10 @@ function FormLogin(props) {
                         <label htmlFor="username" className="font-medium">Username</label>
                         <input
                             className="text"
+                            autoComplete="off"
                             type="text"
                             id="username"
-                            {...register("username")}
+                            {...register("username", { onChange: () => setErr(false) })}
                         />
                         {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
                     </div>
@@ -88,7 +89,7 @@ function FormLogin(props) {
                                 className="w-full focus:outline-none focus:border-none"
                                 id="password"
                                 type={`${showPass ? 'text' : 'password'}`}
-                                {...register("password")}
+                                {...register("password", { onChange: () => setErr(false) })}
                             />
                             <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
                                 onClick={() => setShowPass(!showPass)}
@@ -97,7 +98,7 @@ function FormLogin(props) {
                         {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
 
-                    {err && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
+                    {(err) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
                     {/* <div className="flex items-center my-4">
                         <div className="flex items-center">

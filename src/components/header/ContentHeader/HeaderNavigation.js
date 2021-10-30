@@ -67,7 +67,7 @@ function HeaderNavigation(props) {
                             </Link>
                             <Link
                                 to="/signup"
-                                className="ml-8 animate-pulse whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                                className="header ml-8 animate-pulse whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                             >
                                 Sign up
                             </Link>
@@ -147,7 +147,7 @@ function HeaderNavigation(props) {
                                             className="text-gray-700 w-full rounded-b-md text-left px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
                                             onClick={Logout}
                                         >
-                                            <i class="fas fa-sign-out-alt w-1/5"></i>
+                                            <i className="fas fa-sign-out-alt w-1/5"></i>
                                             <span>Sign out</span>
                                         </button>
                                     </div>

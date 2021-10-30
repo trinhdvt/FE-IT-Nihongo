@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -13,7 +13,7 @@ function FormCreateUser(props) {
 
     const token = useSelector(auth => auth.Auth.token);
 
-    const [code,setCode] = useState("");
+    //const [code,setCode] = useState("");
 
     const schema = yup.object().shape({
         name: yup.string().required().max(45),
@@ -40,8 +40,9 @@ function FormCreateUser(props) {
             }
         })
             .then(res => {
-                setCode(res.data.code);
+                //setCode(res.data.code);
                 swal("Account successfully created!", `${res.data.code}`, "success");
+                reset();
             })
             .catch(err => console.log(err))
     }
@@ -78,7 +79,7 @@ function FormCreateUser(props) {
                         </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    <div className="mt-8 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Hospital:</p>
                         <div className="w-full relative">
                             <input
@@ -94,7 +95,7 @@ function FormCreateUser(props) {
                         </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    <div className="mt-8 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Location:</p>
                         <div className="w-full relative">
                             <input
@@ -111,7 +112,7 @@ function FormCreateUser(props) {
 
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    <div className="mt-8 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Department:</p>
                         <div className="w-full relative">
                             <input
@@ -128,7 +129,7 @@ function FormCreateUser(props) {
 
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    <div className="mt-8 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Position:</p>
                         <div className="w-full relative">
                             <input
@@ -144,7 +145,7 @@ function FormCreateUser(props) {
                         </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    <div className="mt-8 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Channel:</p>
                         <div className="w-full relative">
                             <input
@@ -160,7 +161,7 @@ function FormCreateUser(props) {
                         </div>
                     </div>
 
-                    <div className="mt-6 flex items-center ">
+                    {/* <div className="mt-6 flex items-center ">
                         <p className="font-medium w-1/3 text-gray-600">Code:</p>
 
                         <div className="flex items-center w-full">
@@ -172,13 +173,13 @@ function FormCreateUser(props) {
                                 {...register("code")}
                             />
                         </div>
-                    </div>
+                    </div> */}
 
 
-                    <div className="mt-6 flex items-center justify-end">
+                    <div className="mt-8 flex items-center justify-end">
                         <button
                             type="reset"
-                            onClick={() => setCode("")}
+                            //onClick={() => setCode("")}
                             className="mr-4 justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         >
                             Reset

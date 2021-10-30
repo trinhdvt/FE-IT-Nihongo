@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
 
 const initialState = {
     info: {},
@@ -18,7 +19,7 @@ const login = createSlice({
         onLogin: (state, action) => {
             return {
                 ...state,
-                info: {...action.payload.info},
+                info: { ...action.payload.info },
                 token: action.payload.token
             };
         }

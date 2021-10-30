@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import ManagerSidebar from '../components/ManagerSidebar';
-import TableManagement from '../components/TableManagement';
+import UserManagement from '../../Admin/components/UserManagement';
+import HelpManagement from '../../Admin/components/HelpManagement';
+import ChannelManagement from '../../Admin/components/ChannelManagement';
 import { useParams, useHistory } from 'react-router-dom';
 import './Manager.css';
-import CodeManagement from '../../Admin/components/CodeManagement'
+import CodeManagement from '../../Admin/components/CodeManagement';
 
 function Manager(props) {
     const locationName = useParams().name;
@@ -65,9 +67,9 @@ function Manager(props) {
                         </div>
                     </div>
 
-                    {locationName === "user-management" && <TableManagement type="user-management" arr={[]} isOpen={isOpenUser} closeModal={closeModal} />}
-                    {locationName === "channel-management" && <TableManagement type="channel-management" arr={[]} />}
-                    {locationName === "help-management" && <TableManagement type="help-management" arr={[]} isOpen={isOpenHelp} closeModal={closeModal} />}
+                    {locationName === "user-management" && <UserManagement isOpen={isOpenUser} closeModal={closeModal} />}
+                    {locationName === "channel-management" && <ChannelManagement />}
+                    {locationName === "help-management" && <HelpManagement isOpen={isOpenHelp} closeModal={closeModal} />}
                     {locationName === "code-management" && <CodeManagement />}
                 </div>
 

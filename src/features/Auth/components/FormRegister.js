@@ -15,6 +15,7 @@ function FormRegister(props) {
     const schema = yup.object().shape({
         username: yup.string().required().max(15),
         password: yup.string().required().min(6).max(32),
+        code: yup.string().required()
     }).required();
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
@@ -67,13 +68,20 @@ function FormRegister(props) {
     }
 
     const CheckCode = () => {
+        setErr(false);
+        let code = watchAllFields.code;
         try {
-            let code = watchAllFields.code
             axios.get(authApi.CHECK_CODE(code))
                 .then(() => setCheckCode(true))
-                .catch(() => setCheckCode(false))
-        } catch (error) {
-            // setCheckCode(false)
+                .catch(err => {
+                    setCheckCode(false);
+                    if (err.response) {
+                        setMess(err.response.data.message);
+                        setErr(true);
+                    }
+                })
+        } catch (err) {
+
         }
 
     }
@@ -88,30 +96,15 @@ function FormRegister(props) {
                 <p className="text-center font-xs text-gray-400 tracking-tighter">Get your free account now.</p>
 
                 <div className="mt-4 p-4 auth-form shadow-md">
-                    <div className="mt-6">
-                        <label htmlFor="code" className="font-medium">Given Code</label>
-                        <div className="flex items-center">
-                            <input
-                                id="code"
-                                className="mr-4 text"
-                                type="text"
-                                {...register("code")}
-                            />
-                            <button className="btn-verify" onClick={CheckCode}>
-                                Verify
-                            </button>
-                        </div>
-                        {checkCode === false && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">invalid code</p>}
-                        {checkCode && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
-                    </div>
                     <form className="" onSubmit={handleSubmit(submitFormRegister)}>
                         <div className="mt-6">
                             <label htmlFor="username" className="font-medium">Username</label>
                             <input
                                 className="text"
+                                autoComplete="off"
                                 type="text"
                                 id="username"
-                                {...register("username")}
+                                {...register("username", { onChange: () => setErr(false) })}
                             />
                             {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
                         </div>
@@ -123,13 +116,35 @@ function FormRegister(props) {
                                     className="w-full focus:outline-none focus:border-none"
                                     id="password"
                                     type={`${showPass ? 'text' : 'password'}`}
-                                    {...register("password")}
+                                    {...register("password", { onChange: () => setErr(false) })}
                                 />
                                 <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
                                     onClick={() => setShowPass(!showPass)}
                                 ></i>
                             </div>
                             {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
+                        </div>
+
+                        <div className="mt-6">
+                            <label htmlFor="code" className="font-medium">Given Code</label>
+                            <div className="flex items-center">
+                                <input
+                                    id="code"
+                                    className="mr-4 text"
+                                    type="text"
+                                    {...register("code", {
+                                        onChange: () => {
+                                            setErr(false);
+                                            setCheckCode();
+                                        }
+                                    })}
+                                />
+                                <button className="btn-verify" onClick={CheckCode}>
+                                    Verify
+                                </button>
+                            </div>
+                            {errors.code && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.code.message}</p>}
+                            {checkCode && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
                         </div>
                         {err && <p className="text-sm mt-2 text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
-import TableManagement from '../components/TableManagement';
+import UserManagement from '../components/UserManagement';
+import HelpManagement from '../components/HelpManagement';
+import ChannelManagement from '../components/ChannelManagement';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
 import './Admin.css'
 import { useSelector } from 'react-redux';
@@ -14,7 +16,7 @@ function Admin(props) {
 
     const history = useHistory();
 
-    const [isOpenUser, setIsOpenUser] = useState(false)
+    const [isOpenUser, setIsOpenUser] = useState(false);
 
     const closeModal = () => {
         if (locationName === "user-management")
@@ -71,9 +73,9 @@ function Admin(props) {
                             </div>
                         </div>
 
-                        {locationName === "user-management" && <TableManagement type="user-management" arr={[]} isOpen={isOpenUser} closeModal={closeModal} />}
-                        {locationName === "channel-management" && <TableManagement type="channel-management" arr={[]} />}
-                        {locationName === "help-management" && <TableManagement type="help-management" arr={[]} />}
+                        {locationName === "user-management" && <UserManagement isOpen={isOpenUser} closeModal={closeModal} />}
+                        {locationName === "channel-management" && <ChannelManagement />}
+                        {locationName === "help-management" && <HelpManagement />}
                         {locationName === "code-management" && <CodeManagement />}
                     </div>
 
