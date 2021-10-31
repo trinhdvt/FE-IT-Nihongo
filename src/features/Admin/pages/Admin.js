@@ -7,6 +7,7 @@ import { useParams, useHistory, Redirect } from 'react-router-dom';
 import './Admin.css'
 import { useSelector } from 'react-redux';
 import CodeManagement from '../components/CodeManagement';
+import HospitalManagement from '../components/HospitalManagement';
 
 function Admin(props) {
 
@@ -61,6 +62,7 @@ function Admin(props) {
                                 <option value="channel-management">Channel</option>
                                 <option value="help-management">Help</option>
                                 <option value="code-management">Code</option>
+                                <option value="hospital-management">Hospital</option>
                             </select>
 
                             <div className="flex items-center ml-8 bg-white border border-gray-400 rounded-full px-2">
@@ -77,6 +79,7 @@ function Admin(props) {
                         {locationName === "channel-management" && <ChannelManagement />}
                         {locationName === "help-management" && <HelpManagement />}
                         {locationName === "code-management" && <CodeManagement />}
+                        {locationName === "hospital-management" && <HospitalManagement />}
                     </div>
 
                 </div >
