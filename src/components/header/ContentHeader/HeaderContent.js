@@ -1,36 +1,43 @@
 import React from "react";
 import styled from "styled-components";
-import Secondarybutton from "../../../features/Home/component/SecondaryButton";
 import phone from "../../../features/Home/img/phone.svg";
 import ring1 from "../../../features/Home/img/ring_orange.svg";
 import message1 from "../../../features/Home/img/message_pink.svg";
 import message2 from "../../../features/Home/img/message_blue.svg";
+import arrow from "../../../features/Home/img/arrow.svg";
+import './HeaderContent.css';
+import { Link } from "react-router-dom";
 
 function HeaderContent() {
-	return (
-		<HeaderContentStyled>
-			<div className="left-content">
-				<div className="left-text-container">
-					<h1>HospiTalk</h1>
-					<p className="white">
-						Special messaging application for medical staffs
-					</p>
-					<p className="mt-2 tracking-wide">
-						Healthcare professionals will have a dedicated messaging app.
-						There, they are divided into departments to exchange information,
-						and you can immediately send prominent notifications by SMS or phone.
-					</p>
-					<Secondarybutton name={"Sign Up Now"} />
-				</div>
-			</div>
-			<div className="right-content">
-				<img src={phone} alt="" className="phone" />
-				<img src={ring1} alt="" className="ring1" />
-				<img src={message1} alt="" className="message1" />
-				<img src={message2} alt="" className="message2" />
-			</div>
-		</HeaderContentStyled>
-	);
+  return (
+    <HeaderContentStyled>
+      <div className="left-content">
+        <div className="left-text-container">
+          <h1>HospiTalk</h1>
+          <p className="white">
+            Special messaging application for medical staffs
+          </p>
+          <p className="mt-2 tracking-wide">
+            Healthcare professionals will have a dedicated messaging app.
+            There, they are divided into departments to exchange information,
+            and you can immediately send prominent notifications by SMS or phone.
+          </p>
+          <Link to="/signup">
+            <button className="btn-signUpNow">
+              <span>Sign Up Now</span>
+              <img src={arrow} alt="" className="ml-3" />
+            </button>
+          </Link>
+        </div>
+      </div>
+      <div className="right-content">
+        <img src={phone} alt="" className="phone" />
+        <img src={ring1} alt="" className="ring1" />
+        <img src={message1} alt="" className="message1" />
+        <img src={message2} alt="" className="message2" />
+      </div>
+    </HeaderContentStyled>
+  );
 }
 
 const HeaderContentStyled = styled.div`

@@ -1,0 +1,84 @@
+name: FE-CI/CD
+
+
+on: 
+  # trigger manually
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    
+    # Clone github repo
+    - name: Clone FE repository
+      uses: actions/checkout@v2
+      with:
+        repository: khoikevin2903/FE-IT-Nihongo
+        # select branch, default is master          
+        ref: 'master'
+    
+    # Install NodeJS
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    # Install Dependencies
+    - name: Install Dependencies
+      run: npm ci
+    
+    # Build ReactJS
+    - name: Build production code
+      run: npm run build
+      env:
+        CI: false
+    
+    # Share artifact inside workflow
+    - name: Share artifact inside workflow
+      uses: actions/upload-artifact@v1
+      with:
+        name: it2-build-file
+        path: build
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    
+      # Download previously shared build
+      - name: Get build file
+        uses: actions/download-artifact@v1
+        with:
+          name: it2-build-file
+          
+      # SCP to VPS
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+        with:
+          source: "it2-build-file/*"
+          target: "/home/trinhdvt/"
+      
+      # Execute Remote Command
+      - name: Restart Nginx and clean resources
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: |
+            sudo systemctl stop nginx
+            sudo cp -ar /home/trinhdvt/it2-build-file/* /var/www/it2/
+            sudo systemctl start nginx
+            sudo rm -rf /home/trinhdvt/it2-build-file

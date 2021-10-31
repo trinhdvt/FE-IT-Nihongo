@@ -4,7 +4,7 @@ import Home from './features/Home/page/Home';
 // import AccountSettings from './features/AccountSetting/AccountSettings';
 import Admin from './features/Admin/pages/Admin';
 import Manager from './features/Manager/pages/Manager';
-import FormChat from './features/Chat/FormChat';
+import User from './features/User/pages/User';
 
 export const ROUTES = [
     {
@@ -21,12 +21,7 @@ export const ROUTES = [
         path: "/",
         exact: true,
         main: Home
-    },
-    {
-        path: "/chat",
-        exact: true,
-        main: FormChat
-    },
+    }
 ]
 
 export const PRIVATE_ROUTES_ADMIN = [
@@ -47,8 +42,8 @@ export const PRIVATE_ROUTES_MANAGER = [
 
 export const PRIVATE_ROUTES_USER = [
     {
-        path: "/user",
+        path: "/user/:name",
         exact: true,
-        main: SignUp
+        main: User
     }
 ]

@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
-function ManagerSidebar(props) {
+function UserSidebar(props) {
 
-    const { optionSidebar, changeOptionSidebar } = props;
+    const { locationName } = props;
 
-    const [option, setOption] = useState(optionSidebar);
+    const history = useHistory();
+
+    const [option, setOption] = useState(locationName);
 
     const changeOption = (e) => {
-        setOption(e.target.value);
-        changeOptionSidebar(e.target.value);
+        setOption(e.target.value)
+        history.push(`/user/${e.target.value}`)
     }
 
     return (
@@ -19,7 +23,7 @@ function ManagerSidebar(props) {
                 </div>
 
                 <div>
-                    <p className="font-bold text-gray-600">MANAGER</p>
+                    <p className="font-bold text-gray-600">USER</p>
 
                     <select name="" id="" className="focus:outline-none border border-gray-300 px-2 rounded-full text-sm">
                         <option value="" className="">
@@ -41,7 +45,7 @@ function ManagerSidebar(props) {
                         onChange={changeOption}
                         className="cursor-pointer focus:outline-none border border-gray-400 rounded-lg px-2 py-1 mr-2"
                     >
-                        <option value="channel">Channel</option>
+                        <option value="chat">Chat</option>
                         <option value="help">Help</option>
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
@@ -51,15 +55,15 @@ function ManagerSidebar(props) {
                 </div>
 
                 {
-                    option === "channel" ?
+                    option === "chat" ?
                         <div className="mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Hospital</p>
+                            <p className="text-lg text-gray-700 font-medium">Channel</p>
 
                             <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">RandomHospital1</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital2</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital3</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital4</li>
+                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#clinical_department</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#emergency_department</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group1</li>
+                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group2</li>
                             </ul>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
@@ -137,9 +141,11 @@ function ManagerSidebar(props) {
             </div>
 
             <div className="absolute bottom-0 px-3 py-6 border-t border-gray-300 w-full grid grid-cols-4 gap-4" >
-                <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
+                <Link
+                    to="/user/profile"
+                    className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
                     <i className="fas fa-user"></i>
-                </div>
+                </Link>
 
                 <div className="text-center cursor-pointer text-gray-300 transition duration-400 ease-in-out hover:text-gray-400">
                     <i className="fas fa-user-friends"></i>
@@ -157,4 +163,4 @@ function ManagerSidebar(props) {
     );
 }
 
-export default ManagerSidebar;
+export default UserSidebar;

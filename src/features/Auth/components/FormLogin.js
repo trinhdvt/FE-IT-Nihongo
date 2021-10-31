@@ -25,12 +25,14 @@ function FormLogin(props) {
 
     const [err, setErr] = useState(false);
 
+    const [showPass, setShowPass] = useState(false);
 
     const dispatch = useDispatch();
 
     const history = useHistory();
 
     const submitFormLogin = (data) => {
+
         const urlSearchParams = new URLSearchParams();
 
         for (const [key, value] of Object.entries(data)) {
@@ -39,12 +41,16 @@ function FormLogin(props) {
 
         axios.post(authApi.LOGIN, urlSearchParams)
             .then(res => {
+                let path;
                 const info = jwt_decode(res.data.token);
                 dispatch(onLogin({
                     token: res.data.token,
                     info: info
                 }));
-                history.push('/');
+                if (info.role === "USER") path = `/${info.role.toLowerCase()}/chat`;
+                else path = `/${info.role.toLowerCase()}/user-management`;
+
+                history.push(path);
             })
             .catch(err => {
                 if (err.response) {
@@ -67,28 +73,34 @@ function FormLogin(props) {
                     <div>
                         <label htmlFor="username" className="font-medium">Username</label>
                         <input
-                            className="focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                            className="text"
+                            autoComplete="off"
                             type="text"
                             id="username"
-                            {...register("username")}
+                            {...register("username", { onChange: () => setErr(false) })}
                         />
                         {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
                     </div>
 
                     <div className="mt-6">
                         <label htmlFor="password" className="font-medium">Password</label>
-                        <input
-                            id="password"
-                            className="mb-1 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="password"
-                            {...register("password")}
-                        />
+                        <div className="password flex items-center">
+                            <input
+                                className="w-full focus:outline-none focus:border-none"
+                                id="password"
+                                type={`${showPass ? 'text' : 'password'}`}
+                                {...register("password", { onChange: () => setErr(false) })}
+                            />
+                            <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
+                                onClick={() => setShowPass(!showPass)}
+                            ></i>
+                        </div>
                         {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                     </div>
 
-                    {err && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
+                    {(err) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
-                    <div className="flex items-center my-4">
+                    {/* <div className="flex items-center my-4">
                         <div className="flex items-center">
                             <input name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
 
@@ -102,10 +114,10 @@ function FormLogin(props) {
                                 Forgot your password?
                             </span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <button
-                        className="text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                        className="btn-login mt-6"
                         type="submit"
                     >
                         Sign in

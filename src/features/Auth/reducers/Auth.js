@@ -18,7 +18,7 @@ const login = createSlice({
         onLogin: (state, action) => {
             return {
                 ...state,
-                info: {...action.payload.info},
+                info: { ...action.payload.info },
                 token: action.payload.token
             };
         }

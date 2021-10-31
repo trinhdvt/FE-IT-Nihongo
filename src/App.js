@@ -2,12 +2,13 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { ROUTES, PRIVATE_ROUTES_ADMIN, PRIVATE_ROUTES_MANAGER, PRIVATE_ROUTES_USER } from './routes';
 import Header from './components/header';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 function App() {
 
 	const token = useSelector(auth => auth.Auth.token);
+
 	const role = useSelector(auth => auth.Auth.info ? auth.Auth.info.role : "");
+
 	const isLoggedIn = () => {
 		return token !== "";
 	}
@@ -27,6 +28,9 @@ function App() {
 						}
 						{
 							showRotesPrivateManager(PRIVATE_ROUTES_MANAGER, isLoggedIn(), role)
+						}
+						{
+							showRotesPrivateUser(PRIVATE_ROUTES_USER, isLoggedIn(), role)
 						}
 					</Switch>
 				</div>
@@ -74,25 +78,25 @@ const showRotesPrivateManager = (routes, isLoggedIn, role) => {
 	return result;
 }
 
-// const showRotesPrivateUser = (routes, isLoggedIn, role) => {
-// 	var result = null;
-// 	if (routes.length > 0) {
-// 		result = routes.map((route, index) => {
-// 			return (<Route
-// 				key={index}
-// 				path={route.path}
-// 				exact
-// 				render={props => (isLoggedIn && role === 1) ? <route.main {...props} /> :
-// 					<Redirect to={{
-// 						pathname: '',
-// 						state: { from: props.location }
-// 					}} />}
-// 			/>)
+const showRotesPrivateUser = (routes, isLoggedIn, role) => {
+	var result = null;
+	if (routes.length > 0) {
+		result = routes.map((route, index) => {
+			return (<Route
+				key={index}
+				path={route.path}
+				exact
+				render={props => (isLoggedIn && role === 'USER') ? <route.main {...props} /> :
+					<Redirect to={{
+						pathname: '',
+						state: { from: props.location }
+					}} />}
+			/>)
 
-// 		})
-// 	}
-// 	return result;
-// }
+		})
+	}
+	return result;
+}
 
 
 const showRotesPublic = (routes) => {

@@ -5,35 +5,85 @@ import { useHistory } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import axios from 'axios';
+import { authApi } from '../constants/auth-api';
+import swal from 'sweetalert';
 
 function FormRegister(props) {
 
     const history = useHistory();
 
     const schema = yup.object().shape({
-        code: yup.string().required().max(36),
         username: yup.string().required().max(15),
         password: yup.string().required().min(6).max(32),
-        acceptConditions: yup.boolean().isTrue()
+        code: yup.string().required()
     }).required();
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
+    const watchAllFields = watch();
+
     const [checkCode, setCheckCode] = useState();
 
+    const [showPass, setShowPass] = useState(false);
+
+    const [mess, setMess] = useState();
+
+    const [err, setErr] = useState(false);
+
     const submitFormRegister = (data) => {
-        console.log(data)
-        // axios.post('http://localhost:4000/auth/sign-up', {
-        //     ...data
-        // }).then(() => {
-        //     history.push('/login');
-        // }).catch(err => console.log(err))
+        if (checkCode) {
+            const urlSearchParams = new URLSearchParams();
+
+            for (const [key, value] of Object.entries(data)) {
+                urlSearchParams.append(`${key}`, `${value}`);
+            }
+
+            axios.post(authApi.SIGNUP, urlSearchParams)
+                .then(res => {
+                    swal({
+                        title: "Account successfully created!",
+                        text: "Do you want to go back to the login page?",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                history.push('/login')
+                            }
+                        });
+                })
+                .catch(err => {
+                    if (err.response) {
+                        setMess(err.response.data.message);
+                        setErr(true);
+                    }
+                })
+        } else {
+            setMess("Please verify the code!!!");
+            setErr(true);
+        }
     }
 
     const CheckCode = () => {
-        setCheckCode(true);
+        setErr(false);
+        let code = watchAllFields.code;
+        try {
+            axios.get(authApi.CHECK_CODE(code))
+                .then(() => setCheckCode(true))
+                .catch(err => {
+                    setCheckCode(false);
+                    if (err.response) {
+                        setMess(err.response.data.message);
+                        setErr(true);
+                    }
+                })
+        } catch (err) {
+
+        }
+
     }
 
     return (
@@ -45,69 +95,67 @@ function FormRegister(props) {
 
                 <p className="text-center font-xs text-gray-400 tracking-tighter">Get your free account now.</p>
 
-                <form className="mt-4 p-4 auth-form shadow-md" onSubmit={handleSubmit(submitFormRegister)}>
-
-                    <div className="mt-6">
-                        <label htmlFor="username" className="font-medium">Username</label>
-                        <input
-                            className="focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="text"
-                            id="username"
-                            {...register("username")}
-                        />
-                        {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
-                    </div>
-
-                    <div className="mt-6">
-                        <label htmlFor="password" className="font-medium">Password</label>
-                        <input
-                            id="password"
-                            className="mb-1 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                            type="password"
-                            {...register("password")}
-                        />
-                        {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
-                    </div>
-
-                    <div className="mt-6">
-                        <label htmlFor="code" className="font-medium">Given Code</label>
-                        <div className="flex items-center">
+                <div className="mt-4 p-4 auth-form shadow-md">
+                    <form className="" onSubmit={handleSubmit(submitFormRegister)}>
+                        <div className="mt-6">
+                            <label htmlFor="username" className="font-medium">Username</label>
                             <input
-                                id="code"
-                                className="mr-4 focus:ring-indigo-500 focus:border focus:border-indigo-500 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                                className="text"
+                                autoComplete="off"
                                 type="text"
-                                {...register("code")}
+                                id="username"
+                                {...register("username", { onChange: () => setErr(false) })}
                             />
-                            <button className="btn-verify" onClick={CheckCode}>
-                                Verify
-                            </button>
+                            {errors.username && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.username.message}</p>}
                         </div>
-                        {(errors.code || checkCode === false) && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.code.message}</p>}
-                        {checkCode === true && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
-                    </div>
 
-                    <div className="mt-4">
-                        <div className="flex items-center">
-                            <input
-                                {...register("acceptConditions")}
-                                type="checkbox"
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <span className="ml-2 block text-sm font-medium text-gray-400">
-                                I accept Terms and Conditions
-                            </span>
+                        <div className="mt-6">
+                            <label htmlFor="password" className="font-medium">Password</label>
+                            <div className="password flex items-center">
+                                <input
+                                    className="w-full focus:outline-none focus:border-none"
+                                    id="password"
+                                    type={`${showPass ? 'text' : 'password'}`}
+                                    {...register("password", { onChange: () => setErr(false) })}
+                                />
+                                <i className={`far fa-eye cursor-pointer duration-300 ${showPass ? 'text-blue-500' : 'text-gray-400  hover:text-gray-600'}`}
+                                    onClick={() => setShowPass(!showPass)}
+                                ></i>
+                            </div>
+                            {errors.password && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.password.message}</p>}
                         </div>
-                        {errors.acceptConditions &&
-                            <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">If you do not agree to the conditions, you cannot continue</p>}
 
-                    </div>
+                        <div className="mt-6">
+                            <label htmlFor="code" className="font-medium">Given Code</label>
+                            <div className="flex items-center">
+                                <input
+                                    id="code"
+                                    className="mr-4 text"
+                                    type="text"
+                                    {...register("code", {
+                                        onChange: () => {
+                                            setErr(false);
+                                            setCheckCode();
+                                        }
+                                    })}
+                                />
+                                <button className="btn-verify" onClick={CheckCode}>
+                                    Verify
+                                </button>
+                            </div>
+                            {errors.code && <p className="text-sm text-red-600 ml-2 tracking-tighter font-semibold">{errors.code.message}</p>}
+                            {checkCode && <p className="text-sm text-blue-500 ml-2 tracking-tighter font-semibold">Code has been verify successfully!</p>}
+                        </div>
+                        {err && <p className="text-sm mt-2 text-red-600 ml-2 tracking-tighter font-semibold">{mess}</p>}
 
-                    <button className="mt-4 text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
-                        type="submit"
-                    >
-                        Register
-                    </button>
-                </form>
+                        <button className="mt-8 font-medium text-white bg-indigo-600 text-center w-full py-2 border border-gray-300 rounded-md"
+                            type="submit"
+                        >
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
 

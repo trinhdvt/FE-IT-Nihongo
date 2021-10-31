@@ -4,8 +4,6 @@ import ClassNames from 'classnames';
 // import { SOCKET_URL } from '../../constants/Socket_URL';
 // import SockJsClient from 'react-stomp';
 import { useDispatch } from 'react-redux';
-// import { FetchChat } from '../../reducers/FetchListChat';
-// import { FetchChat2 } from '../../reducers/FetchListChat2';
 
 function FormChat(props) {
 
@@ -68,14 +66,14 @@ function FormChat(props) {
     }) : "";
 
     return (
-        <div className="w-full h-full bg-bgChat bg-cover bg-no-repeat h-full" style={{ borderRadius: "0px 10px 10px 0px" }}>
-            <form className="h-full flex flex-col justify-between shadow mx-auto">
-                <div className="flex items-center bg-white py-2 justify-between">
+        <div className="w-full h-full bg-bgChat bg-cover bg-no-repeat border border-gray-400 rounded">
+            <form className="h-full flex flex-col justify-between ">
+                <div className="flex items-center bg-white p-2 justify-between rounded-t-md">
                     <div className="flex items-center text-xl">
                         <div className="mx-4 h-14 w-14 flex items-center justify-center rounded-lg bg-blue-400 text-white">
                             <span className="text-sm">Avatar</span>
                         </div>
-                        <p className="opacity-80">Kevin</p>
+                        <p className="opacity-80">Dr. Johnson</p>
                     </div>
                     <div className="flex items-center">
                         <div className="text-blue-400 text-xl mx-1 p-3 bg-gray-50 rounded-lg flex items-center justify-center">
@@ -102,7 +100,7 @@ function FormChat(props) {
                         </div>
                     </Scrollbars>
                 </div>
-                <div className="flex items-center bg-white px-4 py-4 w-full">
+                <div className="flex items-center bg-white px-4 py-4 w-full justify-between rounded-b-md">
                     <div className="text-gray-500">
                         <i className="far fa-smile text-xl px-2"></i>
                     </div>
