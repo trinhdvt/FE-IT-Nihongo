@@ -48,7 +48,7 @@ function ChannelManagement(props) {
         }
 
         fetch_List();
-    }, [token])
+    }, [token, id])
 
     const covertList = (list) => {
         var result = [];
