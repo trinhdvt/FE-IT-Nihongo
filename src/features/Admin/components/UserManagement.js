@@ -7,7 +7,7 @@ import Classnames from 'classnames';
 
 function UserManagement(props) {
 
-    const { isOpen, closeModal } = props;
+    const { isOpen, closeModal, id, changeUser, openShowDetailUser } = props;
 
     const token = useSelector(auth => auth.Auth.token);
 
@@ -24,17 +24,21 @@ function UserManagement(props) {
         setPage({ ...page, _page: num })
     }
 
+    const onChangeUser = (item) => {
+        changeUser(item);
+        openShowDetailUser();
+    }
+
     useEffect(() => {
         setLoading(true);
         const fetch_List = async () => {
             try {
-                const response = await axios.get(ManagementApi.FETCH_LIST_USER, {
+                const response = await axios.get(ManagementApi.FETCH_LIST_USER(id), {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response) {
-                    console.log(response.data)
                     setList(response.data);
                     setLoading(false);
                 }
@@ -44,7 +48,7 @@ function UserManagement(props) {
         }
 
         fetch_List();
-    }, [token])
+    }, [token, id])
 
     const covertList = (list) => {
         var result = [];
@@ -69,7 +73,10 @@ function UserManagement(props) {
 
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                            <i className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"></i>
+                            <i
+                                className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"
+                                onClick = {() => onChangeUser(item)}
+                            ></i>
                             <i className="far fa-trash-alt cursor-pointer text-gray-600 hover:text-gray-700"></i>
                         </div>
                     </td>
