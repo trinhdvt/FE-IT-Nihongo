@@ -119,7 +119,8 @@ module.exports = {
         "fade-in-up-icon-5": "fade-in-up-icon-5 1.3s ease-in",
       },
       backgroundImage: (theme) => ({
-        bgChat: "url('./public/images/bgChat.jpg')"
+        bgChat: "url('./public/images/bgChat.jpg')",
+        avatar: "url('./public/images/avata.jpg')",
       }),
     },
   },

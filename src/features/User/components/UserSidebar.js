@@ -82,7 +82,7 @@ function UserSidebar(props) {
                                     <div className="">
                                         <p className="text-xs text-gray-400">16/09/2021</p>
                                         <div className="flex items-center justify-end">
-                                            <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
+                                            <i className="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ function UserSidebar(props) {
                                     <div className="">
                                         <p className="text-xs text-gray-400">16/09/2021</p>
                                         <div className="flex items-center justify-end">
-                                            <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
+                                            <i className="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@ function UserSidebar(props) {
                                     <div className="">
                                         <p className="text-xs text-gray-400">16/09/2021</p>
                                         <div className="flex items-center justify-end">
-                                            <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
+                                            <i className="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>
