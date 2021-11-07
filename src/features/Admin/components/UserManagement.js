@@ -11,6 +11,8 @@ function UserManagement(props) {
 
     const token = useSelector(auth => auth.Auth.token);
 
+    const role = useSelector(auth => auth.Auth.info.role);
+
     const [list, setList] = useState([]);
 
     const [loading, setLoading] = useState(false);
@@ -33,11 +35,12 @@ function UserManagement(props) {
         setLoading(true);
         const fetch_List = async () => {
             try {
-                const response = await axios.get(ManagementApi.FETCH_LIST_USER(id), {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await axios.get(role === "MANAGER" ? ManagementApi.FETCH_LIST_USER_MANAGER : ManagementApi.FETCH_LIST_USER(id),
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
                 if (response) {
                     setList(response.data);
                     setLoading(false);
@@ -75,7 +78,7 @@ function UserManagement(props) {
                         <div className="flex items-center">
                             <i
                                 className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"
-                                onClick = {() => onChangeUser(item)}
+                                onClick={() => onChangeUser(item)}
                             ></i>
                             <i className="far fa-trash-alt cursor-pointer text-gray-600 hover:text-gray-700"></i>
                         </div>

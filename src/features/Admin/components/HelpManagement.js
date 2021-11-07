@@ -11,6 +11,8 @@ function HelpManagement(props) {
 
     const token = useSelector(auth => auth.Auth.token);
 
+    const role = useSelector(auth => auth.Auth.info.role);
+
     const [list, setList] = useState([]);
 
     const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ function HelpManagement(props) {
         setLoading(true);
         const fetch_List = async () => {
             try {
-                const response = await axios.get(ManagementApi.FETCH_LIST_HELP(id), {
+                const response = await axios.get(role === "MANAGER" ? ManagementApi.FETCH_LIST_HELP_MANAGER : ManagementApi.FETCH_LIST_HELP(id), {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

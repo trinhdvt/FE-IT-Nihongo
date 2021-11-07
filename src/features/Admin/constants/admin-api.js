@@ -16,4 +16,7 @@ export const ManagementApi = {
     return `/api/hospital/${id}/channel`
   },
   FETCH_LIST_HOSPITAL: `/api/hospital`,
+  FETCH_LIST_USER_MANAGER: `/api/user`,
+  FETCH_LIST_HELP_MANAGER: `/api/help`,
+  FETCH_LIST_CHANNEL_MANAGER: `/api/channel`,
 }

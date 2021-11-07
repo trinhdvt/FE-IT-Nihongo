@@ -53,15 +53,6 @@ function ManagerSidebar(props) {
                 {
                     option === "channel" ?
                         <div className="mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Hospital</p>
-
-                            <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">RandomHospital1</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital2</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital3</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital4</li>
-                            </ul>
-
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
 
                             <div className="mt-2 cursor-pointer">
