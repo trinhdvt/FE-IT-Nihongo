@@ -29,6 +29,7 @@ function UserManagement(props) {
     const onChangeUser = (item) => {
         changeUser(item);
         openShowDetailUser();
+        console.log('ok')
     }
 
     useEffect(() => {
@@ -51,7 +52,7 @@ function UserManagement(props) {
         }
 
         fetch_List();
-    }, [token, id])
+    }, [token, id, role])
 
     const covertList = (list) => {
         var result = [];

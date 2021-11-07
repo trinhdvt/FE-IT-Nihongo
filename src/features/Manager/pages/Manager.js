@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ManagerSidebar from '../components/ManagerSidebar';
 import UserManagement from '../../Admin/components/UserManagement';
 import HelpManagement from '../../Admin/components/HelpManagement';
-import ChannelManagement from '../../Admin/components/ChannelManagement';
+// import ChannelManagement from '../../Admin/components/ChannelManagement';
 import { useParams, useHistory } from 'react-router-dom';
 import './Manager.css';
 import CodeManagement from '../../Admin/components/CodeManagement';
 import DetailHelpForm from '../components/DetailHelpForm';
+// import FormShowDetailHospital from '../../Admin/components/FormShowDetailHospital';
+import FormShowDetailUser from '../../Admin/components/FormShowDetailUser';
+import FormShowDetailHelp from '../../Admin/components/FormShowDetailHelp';
+import FormShowDetailChannel from '../../Admin/components/FormShowDetailChannel';
+import axios from 'axios';
+import { ManagementApi } from '../../Admin/constants/admin-api';
+import { useSelector } from 'react-redux';
+
 
 function Manager(props) {
     const locationName = useParams().name;
+
+    const token = useSelector(auth => auth.Auth.token);
 
     const history = useHistory();
 
@@ -44,14 +54,99 @@ function Manager(props) {
         history.push(`/manager/${e.target.value}`)
     }
 
+    // const [showDetailHospital, setShowDetailHospital] = useState(false);
+
+    // const [hospital, setHospital] = useState();
+
+    // const changeHospital = (item) => {
+    //     setHospital(item);
+    // }
+
+    // const openShowDetailHospital = () => {
+    //     setShowDetailHospital(true);
+    // }
+
+    // const closeShowDetailHospital = () => {
+    //     setShowDetailHospital(false);
+    // }
+
+    const [user, setUser] = useState();
+
+    const [showDetailUser, setShowDetailUser] = useState(false);
+
+    const changeUser = (item) => {
+        setUser(item);
+    }
+
+    const openShowDetailUser = () => {
+        setShowDetailUser(true);
+    }
+
+    const closeShowDetailUser = () => {
+        setShowDetailUser(false);
+    }
+
+    const [help, setHelp] = useState();
+
+    const [showDetailHelp, setShowDetailHelp] = useState(false);
+
+    const changeHelp = (item) => {
+        setHelp(item);
+    }
+
+    const openShowDetailHelp = () => {
+        setShowDetailHelp(true);
+    }
+
+    const closeShowDetailHelp = () => {
+        setShowDetailHelp(false);
+    }
+
+    const [channel, setChannel] = useState();
+
+    const [showDetailChannel, setShowDetailChannel] = useState(false);
+
+    const changeChannel = (item) => {
+        setChannel(item);
+    }
+
+    const openShowDetailChannel = () => {
+        setShowDetailChannel(true);
+    }
+
+    const closeShowDetailChannel = () => {
+        setShowDetailChannel(false);
+    }
+
+    const [list, setList] = useState([]);
+    
+    useEffect(() => {
+        const fetch_List = async () => {
+            try {
+                const response = await axios.get(ManagementApi.FETCH_LIST_CHANNEL_MANAGER, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response) {
+                    setList(response.data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetch_List();
+    }, [token])
+
     return (
         <div className="flex bg-gray-50 max-w-7xl mx-auto px-4 h-full py-4">
             <div className="card w-full">
 
-                <ManagerSidebar optionSidebar={optionSidebar} changeOptionSidebar={changeOptionSidebar} />
+                <ManagerSidebar id={2} list={list} optionSidebar={optionSidebar} changeOptionSidebar={changeOptionSidebar} changeChannel={changeChannel} openShowDetailChannel={openShowDetailChannel}/>
 
                 {optionSidebar === 'help' ? <DetailHelpForm /> :
-                    <div className="border border-gray-400 p-4 rounded">
+                    <div className="border border-gray-400 p-4 rounded relative">
                         <div className="flex item center">
                             <select
                                 name="urlName"
@@ -60,7 +155,7 @@ function Manager(props) {
                                 className="cursor-pointer focus:outline-none border border-gray-300 px-6 py-1 rounded-full text-sm"
                             >
                                 <option value="user-management">User</option>
-                                <option value="channel-management">Channel</option>
+                                {/* <option value="channel-management">Channel</option> */}
                                 <option value="help-management">Help</option>
                                 <option value="code-management">Code</option>
                             </select>
@@ -75,9 +170,13 @@ function Manager(props) {
                             </div>
                         </div>
 
-                        {locationName === "user-management" && <UserManagement isOpen={isOpenUser} closeModal={closeModal} />}
-                        {locationName === "channel-management" && <ChannelManagement />}
-                        {locationName === "help-management" && <HelpManagement isOpen={isOpenHelp} closeModal={closeModal} />}
+                        {/* {showDetailHospital && <FormShowDetailHospital hospital={hospital} closeModal={closeShowDetailHospital} openModal={openShowDetailHospital} />} */}
+                        {showDetailUser && <FormShowDetailUser user={user} closeModal={closeShowDetailUser} openModal={openShowDetailUser} />}
+                        {showDetailHelp && <FormShowDetailHelp help={help} closeModal={closeShowDetailHelp} openModal={openShowDetailHelp} />}
+                        {showDetailChannel && <FormShowDetailChannel channel={channel} closeModal={closeShowDetailChannel} openModal={openShowDetailChannel} />}
+                        {locationName === "user-management" && <UserManagement isOpen={isOpenUser} closeModal={closeModal} changeUser={changeUser} openShowDetailUser={openShowDetailUser} />}
+                        {/* {locationName === "channel-management" && <ChannelManagement changeChannel={changeChannel} openShowDetailChannel={openShowDetailChannel} />} */}
+                        {locationName === "help-management" && <HelpManagement isOpen={isOpenHelp} closeModal={closeModal} changeHelp={changeHelp} openShowDetailHelp={openShowDetailHelp} />}
                         {locationName === "code-management" && <CodeManagement />}
                     </div>}
             </div >

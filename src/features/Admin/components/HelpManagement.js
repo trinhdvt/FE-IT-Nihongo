@@ -4,6 +4,8 @@ import { ManagementApi } from '../constants/admin-api';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Classnames from 'classnames';
+import FormCreateHelp from '../../Manager/components/FormCreateHelp';
+import { useParams } from 'react-router';
 
 function HelpManagement(props) {
 
@@ -12,6 +14,8 @@ function HelpManagement(props) {
     const token = useSelector(auth => auth.Auth.token);
 
     const role = useSelector(auth => auth.Auth.info.role);
+
+    const locationName = useParams().name;
 
     const [list, setList] = useState([]);
 
@@ -50,7 +54,7 @@ function HelpManagement(props) {
         }
 
         fetch_List();
-    }, [token, id])
+    }, [token, id, role])
 
     const covertList = (list) => {
         var result = [];
@@ -177,6 +181,7 @@ function HelpManagement(props) {
             </ul>
 
             {isOpen && <FormCreateUser closeModal={closeModal} />}
+            {(isOpen && role === "MANAGER" && locationName === "help-management") && <FormCreateHelp closeModal={closeModal} />}
 
         </div>
     );

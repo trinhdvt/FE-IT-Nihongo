@@ -9,7 +9,7 @@ function ChannelManagement(props) {
     const { id, changeChannel, openShowDetailChannel } = props;
 
     const token = useSelector(auth => auth.Auth.token);
-    
+
     const role = useSelector(auth => auth.Auth.info.role);
 
     const [list, setList] = useState([]);
@@ -50,7 +50,7 @@ function ChannelManagement(props) {
         }
 
         fetch_List();
-    }, [token, id])
+    }, [token, id, role])
 
     const covertList = (list) => {
         var result = [];
