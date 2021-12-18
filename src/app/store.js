@@ -9,12 +9,14 @@ import persistStore from 'redux-persist/es/persistStore';
 import Auth from '../features/Auth/reducers/Auth';
 import EditProfile from '../reducers/EditProfile';
 import ListMessage from '../reducers/ListMessage';
+import AdminReducer from '../features/Admin/reducers/AdminReducer';
 
 
 const rootReducer = combineReducers({
     Auth: Auth,
     EditProfile: EditProfile,
     ListMessage: ListMessage,
+    AdminReducer: AdminReducer,
 });
 
 const persistConfig = {

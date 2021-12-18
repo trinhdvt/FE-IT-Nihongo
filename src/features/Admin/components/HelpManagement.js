@@ -4,12 +4,18 @@ import { ManagementApi } from '../constants/admin-api';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Classnames from 'classnames';
+import FormCreateHelp from '../../Manager/components/FormCreateHelp';
+import { useParams } from 'react-router';
 
 function HelpManagement(props) {
 
-    const { isOpen, closeModal } = props;
+    const { isOpen, closeModal, id, changeHelp, openShowDetailHelp } = props;
 
     const token = useSelector(auth => auth.Auth.token);
+
+    const role = useSelector(auth => auth.Auth.info.role);
+
+    const locationName = useParams().name;
 
     const [list, setList] = useState([]);
 
@@ -24,17 +30,21 @@ function HelpManagement(props) {
         setPage({ ...page, _page: num })
     }
 
+    const onChangeHelp = (item) => {
+        changeHelp(item);
+        openShowDetailHelp();
+    }
+
     useEffect(() => {
         setLoading(true);
         const fetch_List = async () => {
             try {
-                const response = await axios.get(ManagementApi.FETCH_LIST_HELP, {
+                const response = await axios.get(role === "MANAGER" ? ManagementApi.FETCH_LIST_HELP_MANAGER : ManagementApi.FETCH_LIST_HELP(id), {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response) {
-                    console.log(response.data)
                     setList(response.data);
                     setLoading(false);
                 }
@@ -44,7 +54,7 @@ function HelpManagement(props) {
         }
 
         fetch_List();
-    }, [token])
+    }, [token, id, role])
 
     const covertList = (list) => {
         var result = [];
@@ -69,7 +79,8 @@ function HelpManagement(props) {
 
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                            <i className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"></i>
+                            <i className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"
+                                onClick={() => onChangeHelp(item)}></i>
                             <i className="fas fa-user-plus mr-6 cursor-pointer text-gray-600 hover:text-gray-700"></i>
                             <i className="far fa-trash-alt cursor-pointer text-gray-600 hover:text-gray-700"></i>
                         </div>
@@ -170,6 +181,7 @@ function HelpManagement(props) {
             </ul>
 
             {isOpen && <FormCreateUser closeModal={closeModal} />}
+            {(isOpen && role === "MANAGER" && locationName === "help-management") && <FormCreateHelp closeModal={closeModal} />}
 
         </div>
     );

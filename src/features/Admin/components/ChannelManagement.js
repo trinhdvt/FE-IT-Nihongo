@@ -6,7 +6,11 @@ import Classnames from 'classnames';
 
 function ChannelManagement(props) {
 
+    const { id, changeChannel, openShowDetailChannel } = props;
+
     const token = useSelector(auth => auth.Auth.token);
+
+    const role = useSelector(auth => auth.Auth.info.role);
 
     const [list, setList] = useState([]);
 
@@ -21,11 +25,16 @@ function ChannelManagement(props) {
         setPage({ ...page, _page: num })
     }
 
+    const onChangeChannel = (item) => {
+        changeChannel(item);
+        openShowDetailChannel();
+    }
+
     useEffect(() => {
         setLoading(true);
         const fetch_List = async () => {
             try {
-                const response = await axios.get(ManagementApi.FETCH_LIST_CHANNEL, {
+                const response = await axios.get(role === "MANAGER" ? ManagementApi.FETCH_LIST_HELP_MANAGER : ManagementApi.FETCH_LIST_CHANNEL(id), {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -41,7 +50,7 @@ function ChannelManagement(props) {
         }
 
         fetch_List();
-    }, [token])
+    }, [token, id, role])
 
     const covertList = (list) => {
         var result = [];
@@ -56,17 +65,19 @@ function ChannelManagement(props) {
                 <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                            {index}
+                            {index + 1}
                         </div>
                     </td>
 
                     <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-700 font-medium">{item.fullName}</div>
+                        <div className="text-sm text-gray-700 font-medium">{item.title}</div>
                     </td>
 
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                            <i className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"></i>
+                            <i className="far fa-eye mr-6 cursor-pointer text-gray-600 hover:text-gray-700"
+                                onClick={() => onChangeChannel(item)}
+                            ></i>
                             <i className="fas fa-user-plus mr-6 cursor-pointer text-gray-600 hover:text-gray-700"></i>
                             <i className="far fa-trash-alt cursor-pointer text-gray-600 hover:text-gray-700"></i>
                         </div>

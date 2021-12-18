@@ -2,13 +2,46 @@ import React, { useState } from 'react';
 
 function ManagerSidebar(props) {
 
-    const { optionSidebar, changeOptionSidebar } = props;
+    const {id, list, optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
 
     const [option, setOption] = useState(optionSidebar);
 
     const changeOption = (e) => {
         setOption(e.target.value);
         changeOptionSidebar(e.target.value);
+    }
+
+    const OpenShowDetail = (item) => {
+        changeChannel(item);
+        openShowDetailChannel();
+    }
+
+    const covertList = (list) => {
+        var result = [];
+        for (let i = 0; i < 8; i++) {
+            if (i >= list.length) break;
+            result.push(list[i]);
+        }
+
+        const showListCode = result.map((item, index) => {
+            console.log(item)
+            return (
+                <li
+                    key={index}
+                className={`text-sm flex items-center justify-between font-medium mt-3 cursor-pointer ${item.id === id ? 'text-gray-600' : ' text-gray-400'}`}
+                >
+                    <p
+                        className="w-52 truncate"
+                        // onClick={() => SetHospital(item.id)}
+                        title={item.title}
+                    >{item.title}</p>
+                    <i class="far fa-eye" title="View hospital details" onClick={() => OpenShowDetail(item)}></i>
+                </li>
+            )
+        })
+
+        return showListCode;
+
     }
 
     return (
@@ -53,14 +86,13 @@ function ManagerSidebar(props) {
                 {
                     option === "channel" ?
                         <div className="mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Hospital</p>
 
-                            <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">RandomHospital1</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital2</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital3</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">RandomHospital4</li>
-                            </ul>
+                            <div className="ml-2 mt-3">
+                                <p className="text-xl text-gray-700 font-medium">Channel</p>
+                                <ul className="ml-4 mt-2">
+                                    {covertList(list)}
+                                </ul>
+                            </div>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
 
