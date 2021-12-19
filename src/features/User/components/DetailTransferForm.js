@@ -61,12 +61,12 @@ function DetailTransferForm(props) {
                     <div className="flex items-center mt-4">
                         <p className="font-medium">Patient Profile: </p>
                         <a href={transfer.patientProfile.fileUrl} target="_blank" without rel="noreferrer"
-                            className="font-normal flex items-center">{transfer.patientProfile.fileName}</a>
+                            className="font-normal flex items-center text-blue-400 underline ml-2 hover:text-blue-600">{transfer.patientProfile.fileName}</a>
                     </div>
                     <div className="flex items-center mt-4">
                         <p className="font-medium">Medical Summary: </p>
                         <a href={transfer.medicalSummary.fileUrl} target="_blank" without rel="noreferrer"
-                            className="font-normal flex items-center">{transfer.medicalSummary.fileName}</a>
+                            className="font-normal flex items-center text-blue-400 underline ml-2 hover:text-blue-600">{transfer.medicalSummary.fileName}</a>
                     </div>
                     <p className="font-medium mt-4">Doctor's diagnosis: <span className="font-normal">{transfer.doctorDiagnosis}</span></p>
                     <div>
