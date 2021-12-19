@@ -142,7 +142,7 @@ function ManagerSidebar(props) {
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 bg-gray-200 flex item-center rounded-lg">
+                                <div className="p-2 bg-gray-100 flex item-center rounded-lg">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -162,18 +162,18 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Kevin</p>
+                                        <p className="text-xs truncate text-gray-400">Are you oke?</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">10/8/2021</p>
                                         <div className="flex items-center justify-end">
                                             <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
@@ -182,18 +182,18 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Ronaldo</p>
+                                        <p className="text-xs truncate text-gray-400">Good job!!!</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">13/7/2021</p>
                                         <div className="flex items-center justify-end">
                                             <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>

@@ -6,6 +6,8 @@ import { onLogout } from '../../../features/Auth/reducers/Auth';
 import './HeaderNavigation.css';
 import { onEditProfile } from '../../../reducers/EditProfile';
 import { clearWS } from '../../../features/User/reducers/UserReducer';
+import { onChangeIdHospital } from '../../../features/User/reducers/IdHospital';
+import { onChangeTransfer } from '../../../features/User/reducers/transfer';
 
 function HeaderNavigation(props) {
 
@@ -33,6 +35,8 @@ function HeaderNavigation(props) {
     const Logout = () => {
         dispatch(onLogout());
         dispatch(clearWS());
+        dispatch(onChangeIdHospital(null));
+        dispatch(onChangeTransfer(null));
         history.push('/login');
     }
 

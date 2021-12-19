@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { onChangeIdHospital } from '../reducers/IdHospital';
 import { onChangeInfoRoom } from '../reducers/InfoRoom';
+import { fetchListTransfer } from '../reducers/ListTransfer';
 import { onChangeTransfer } from '../reducers/transfer';
 
 
@@ -21,12 +22,15 @@ function UserSidebar(props) {
 
     const token = useSelector(state => state.Auth.token);
 
-    const [listTransfer, setListTransfer] = useState();
+    const ListTransfer = useSelector(state => state.ListTransfer);
+
+    const [listTransfer, setListTransfer] = useState(ListTransfer)
 
     const [listHospital, setListHospital] = useState();
 
-    
-
+    useEffect(() => {
+        setListTransfer(ListTransfer);
+    }, [ListTransfer])
 
     useEffect(() => {
         axios.get('/api/transfer-form', {
@@ -35,8 +39,9 @@ function UserSidebar(props) {
             }
         })
             .then(res => {
-                setListTransfer(res.data);
-                dispatch(onChangeTransfer(res.data[0]))
+                dispatch(fetchListTransfer(res.data));
+                setListTransfer(res.data)
+                dispatch(onChangeTransfer(res.data[0]));
             })
             .catch(err => console.log(err))
     }, [token, dispatch])
@@ -48,8 +53,9 @@ function UserSidebar(props) {
             }
         }).then(res => {
             setListHospital(res.data);
+            dispatch(onChangeIdHospital(res.data[0]));
         })
-    }, [token])
+    }, [token, dispatch])
 
     useEffect(() => {
         setListRoom(ListRoom);
@@ -82,7 +88,8 @@ function UserSidebar(props) {
 
     const convertListTransfer = (list) => {
         if (list) {
-            const result = list.map((item, index) => {
+            const newList = list.filter((x,index) => index < 5);
+            const result = newList.map((item, index) => {
                 return (
                     <li
                         key={index}
@@ -194,14 +201,14 @@ function UserSidebar(props) {
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Kevin</p>
+                                        <p className="text-xs truncate text-gray-400">Are you oke?</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">10/8/2021</p>
                                         <div className="flex items-center justify-end">
-                                            <i className="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
+                                            <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -214,14 +221,14 @@ function UserSidebar(props) {
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Ronaldo</p>
+                                        <p className="text-xs truncate text-gray-400">Good job!!!</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">13/7/2021</p>
                                         <div className="flex items-center justify-end">
-                                            <i className="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
+                                            <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>

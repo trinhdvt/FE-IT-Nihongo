@@ -14,6 +14,7 @@ import InfoRoom from '../features/User/reducers/InfoRoom';
 import ListRoom from '../features/User/reducers/ListRoom';
 import Transfer from '../features/User/reducers/transfer';
 import IdHospital from '../features/User/reducers/IdHospital'
+import ListTransfer from '../features/User/reducers/ListTransfer';
 
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     ListRoom: ListRoom,
     Transfer: Transfer,
     IdHospital:IdHospital,
+    ListTransfer: ListTransfer,
 });
 
 const persistConfig = {

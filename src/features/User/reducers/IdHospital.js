@@ -7,7 +7,6 @@ const IdHospital = createSlice({
     initialState: initialState,
     reducers: {
         onChangeIdHospital: (state, action) => {
-            console.log(action.payload)
            return action.payload;
         },
     }

@@ -6,6 +6,9 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import qs from 'qs';
+import { useDispatch } from 'react-redux';
+import { onChangeTransfer } from '../reducers/transfer';
+import { fetchListTransfer } from '../reducers/ListTransfer';
 
 function FormCreateHospitalTransfer(props) {
 
@@ -23,8 +26,6 @@ function FormCreateHospitalTransfer(props) {
 
     const [reason, setReason] = useState("");
 
-    console.log(info)
-
     const schema = yup.object().shape({
         title: yup.string().required(),
         doctorDiagnosis: yup.string().required(),
@@ -33,6 +34,8 @@ function FormCreateHospitalTransfer(props) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
+
+    const dispatch = useDispatch();
 
     const submitFormCreateUser = async (data) => {
         const newPatientProfile = await fetchUrl(patientProfile);
@@ -45,12 +48,24 @@ function FormCreateHospitalTransfer(props) {
                 medicalSummary: newMedicalSummary.data.fileUrl,
                 reason: reason
             }
-            console.log(newData)
             axios.post('/api/transfer-form', qs.stringify(newData), {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
-            }).then(res => console.log(res.data))
+            }).then((res) => {
+                swal("Create success!", "You clicked the button!", "success");
+                CloseModal();
+                dispatch(onChangeTransfer(res.data));
+                axios.get('/api/transfer-form', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(res => {
+                        dispatch(fetchListTransfer(res.data));
+                    })
+                    .catch(err => console.log(err))
+            })
         }
 
     }
