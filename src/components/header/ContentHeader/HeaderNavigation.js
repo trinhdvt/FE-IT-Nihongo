@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { onLogout } from '../../../features/Auth/reducers/Auth';
 import './HeaderNavigation.css';
 import { onEditProfile } from '../../../reducers/EditProfile';
+import { clearWS } from '../../../features/User/reducers/UserReducer';
 
 function HeaderNavigation(props) {
 
@@ -31,6 +32,7 @@ function HeaderNavigation(props) {
 
     const Logout = () => {
         dispatch(onLogout());
+        dispatch(clearWS());
         history.push('/login');
     }
 
@@ -129,6 +131,9 @@ function HeaderNavigation(props) {
                                             <span>Edit Profile</span>
                                         </Link>
                                         <Link
+                                            onClick={() => {
+                                                setDropdownUser(!dropdownUser);
+                                            }}
                                             to={`/${role}/chat`}
                                             className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
                                         >
@@ -136,6 +141,9 @@ function HeaderNavigation(props) {
                                             <span>Chat</span>
                                         </Link>
                                         <Link
+                                            onClick={() => {
+                                                setDropdownUser(!dropdownUser);
+                                            }}
                                             to={`/${role}/help`}
                                             className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 transition duration-300 ease-in-out flex items-center"
                                         >

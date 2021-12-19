@@ -14,6 +14,7 @@ import FormShowDetailChannel from '../../Admin/components/FormShowDetailChannel'
 import axios from 'axios';
 import { ManagementApi } from '../../Admin/constants/admin-api';
 import { useSelector } from 'react-redux';
+import DetailTransferFrom from '../../User/components/DetailTransferForm';
 
 
 function Manager(props) {
@@ -54,21 +55,6 @@ function Manager(props) {
         history.push(`/manager/${e.target.value}`)
     }
 
-    // const [showDetailHospital, setShowDetailHospital] = useState(false);
-
-    // const [hospital, setHospital] = useState();
-
-    // const changeHospital = (item) => {
-    //     setHospital(item);
-    // }
-
-    // const openShowDetailHospital = () => {
-    //     setShowDetailHospital(true);
-    // }
-
-    // const closeShowDetailHospital = () => {
-    //     setShowDetailHospital(false);
-    // }
 
     const [user, setUser] = useState();
 
@@ -143,9 +129,9 @@ function Manager(props) {
         <div className="flex bg-gray-50 max-w-7xl mx-auto px-4 h-full py-4">
             <div className="card w-full">
 
-                <ManagerSidebar id={2} list={list} optionSidebar={optionSidebar} changeOptionSidebar={changeOptionSidebar} changeChannel={changeChannel} openShowDetailChannel={openShowDetailChannel}/>
+                <ManagerSidebar id={10} list={list} optionSidebar={optionSidebar} changeOptionSidebar={changeOptionSidebar} changeChannel={changeChannel} openShowDetailChannel={openShowDetailChannel}/>
 
-                {optionSidebar === 'help' ? <DetailHelpForm /> :
+                {optionSidebar === 'help' ? <DetailHelpForm /> : optionSidebar === 'transfer' ? <DetailTransferFrom /> :
                     <div className="border border-gray-400 p-4 rounded relative">
                         <div className="flex item center">
                             <select

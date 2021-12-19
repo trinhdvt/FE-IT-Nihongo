@@ -29,7 +29,6 @@ function UserManagement(props) {
     const onChangeUser = (item) => {
         changeUser(item);
         openShowDetailUser();
-        console.log('ok')
     }
 
     useEffect(() => {

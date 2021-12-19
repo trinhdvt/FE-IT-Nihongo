@@ -1,10 +1,57 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
+import { onChangeIdHospital } from '../reducers/IdHospital';
+import { onChangeInfoRoom } from '../reducers/InfoRoom';
+import { onChangeTransfer } from '../reducers/transfer';
+
 
 function UserSidebar(props) {
 
-    const { locationName } = props;
+    const { locationName, openModal } = props;
+
+    const dispatch = useDispatch();
+
+    const ListRoom = useSelector(state => state.ListRoom);
+
+    const [listRoom, setListRoom] = useState(ListRoom);
+
+    const token = useSelector(state => state.Auth.token);
+
+    const [listTransfer, setListTransfer] = useState();
+
+    const [listHospital, setListHospital] = useState();
+
+
+    useEffect(() => {
+        axios.get('/api/transfer-form', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                setListTransfer(res.data);
+                dispatch(onChangeTransfer(res.data[0]))
+            })
+            .catch(err => console.log(err))
+    }, [token, dispatch])
+
+    useEffect(() => {
+        axios.get('/api/hospital', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(res => {
+            setListHospital(res.data);
+        })
+    }, [token])
+
+    useEffect(() => {
+        setListRoom(ListRoom);
+    }, [ListRoom]);
 
     const history = useHistory();
 
@@ -13,6 +60,58 @@ function UserSidebar(props) {
     const changeOption = (e) => {
         setOption(e.target.value)
         history.push(`/user/${e.target.value}`)
+    }
+
+    const convertListRoom = (list) => {
+        if (list) {
+            const result = list.map((item, index) => {
+                return (
+                    <li
+                        className="text-sm font-medium text-gray-600 cursor-pointer"
+                        key={index}
+                        onClick={() => dispatch(onChangeInfoRoom(item))}
+                    >{item.title}</li>
+                )
+            })
+
+            return result;
+        }
+    }
+
+    const convertListTransfer = (list) => {
+        if (list) {
+            const result = list.map((item, index) => {
+                return (
+                    <li
+                        key={index}
+                        className="text-sm font-medium text-gray-600 cursor-pointer mt-2"
+                        onClick={() => dispatch(onChangeTransfer(item))}
+                    >{item.title}</li>
+                )
+            })
+
+            return result;
+        }
+    }
+
+    const convertListHospital = (list) => {
+        if (list) {
+            const newList = list.filter((x,index) => index < 5)
+            const result = newList.map((item, index) => {
+                return (
+                    <li
+                        key={index}
+                        className="text-sm font-medium text-gray-600 cursor-pointer mt-2 truncate w-56"
+                        onClick={() => {
+                            dispatch(onChangeIdHospital(item));
+                            openModal();
+                        }}
+                    >#{item.name}</li>
+                )
+            })
+
+            return result;
+        }
     }
 
     return (
@@ -47,6 +146,7 @@ function UserSidebar(props) {
                     >
                         <option value="chat">Chat</option>
                         <option value="help">Help</option>
+                        <option value="transfer">Transfer</option>
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
                         <i className="fas fa-search text-gray-300 text-sm"></i>
@@ -60,16 +160,13 @@ function UserSidebar(props) {
                             <p className="text-lg text-gray-700 font-medium">Channel</p>
 
                             <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#clinical_department</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#emergency_department</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group1</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer hover:opacity-80 mt-2">#volunteer_group2</li>
+                                {convertListRoom(listRoom)}
                             </ul>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 bg-gray-200 flex item-center rounded-lg">
+                                <div className="p-2 bg-gray-100 flex item-center rounded-lg">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -89,7 +186,7 @@ function UserSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -109,7 +206,7 @@ function UserSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -127,16 +224,31 @@ function UserSidebar(props) {
                                     </div>
                                 </div>
                             </div>
-                        </div> :
-                        <div className="ml-2 mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Need Helps</p>
+                        </div> : option === "help" ?
+                            <div className="ml-2 mt-4">
+                                <p className="text-lg text-gray-700 font-medium">Need Helps</p>
 
-                            <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
-                            </ul>
-                        </div>
+                                <ul className="ml-4 mt-2">
+                                    <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
+                                </ul>
+                            </div> :
+
+                            <div className="ml-2 mt-4">
+                                <p className="text-lg text-gray-700 font-medium">Hospital Transfer</p>
+
+                                <ul className="ml-4 mt-2">
+                                    {convertListTransfer(listTransfer)}
+                                </ul>
+
+                                <p className="text-lg text-gray-700 mt-4 font-medium">Hospital Contact</p>
+
+                                <ul className="ml-4 mt-2">
+                                    {convertListHospital(listHospital)}
+                                </ul>
+                            </div>
+
                 }
             </div>
 

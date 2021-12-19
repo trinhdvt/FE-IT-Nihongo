@@ -1,10 +1,51 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { onChangeTransfer } from '../../User/reducers/transfer';
 
 function ManagerSidebar(props) {
 
-    const {id, list, optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+    const { list, optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+
+    const [id, setId] = useState(-1);
 
     const [option, setOption] = useState(optionSidebar);
+
+    const token = useSelector(state => state.Auth.token);
+
+    const dispatch = useDispatch();
+
+    const [listTransfer, setListTransfer] = useState();
+
+    useEffect(() => {
+        axios.get('/api/transfer-form', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                setListTransfer(res.data);
+                dispatch(onChangeTransfer(res.data[0]))
+            })
+            .catch(err => console.log(err))
+    }, [token, dispatch])
+
+    const convertListTransfer = (list) => {
+        if (list) {
+            const result = list.map((item, index) => {
+                return (
+                    <li
+                        key={index}
+                        className="text-sm font-medium text-gray-600 cursor-pointer mt-2"
+                        onClick={() => dispatch(onChangeTransfer(item))}
+                    >{item.title}</li>
+                )
+            })
+
+            return result;
+        }
+    }
 
     const changeOption = (e) => {
         setOption(e.target.value);
@@ -24,18 +65,20 @@ function ManagerSidebar(props) {
         }
 
         const showListCode = result.map((item, index) => {
-            console.log(item)
             return (
                 <li
                     key={index}
-                className={`text-sm flex items-center justify-between font-medium mt-3 cursor-pointer ${item.id === id ? 'text-gray-600' : ' text-gray-400'}`}
+                    className={`text-sm flex items-center justify-between font-medium mt-3 cursor-pointer ${item.id === id ? 'text-gray-600' : ' text-gray-400'}`}
                 >
                     <p
                         className="w-52 truncate"
-                        // onClick={() => SetHospital(item.id)}
                         title={item.title}
                     >{item.title}</p>
-                    <i class="far fa-eye" title="View hospital details" onClick={() => OpenShowDetail(item)}></i>
+                    <i class="far fa-eye" title="View hospital details"
+                        onClick={() => {
+                            setId(item.id);
+                            OpenShowDetail(item);
+                        }}></i>
                 </li>
             )
         })
@@ -76,6 +119,7 @@ function ManagerSidebar(props) {
                     >
                         <option value="channel">Channel</option>
                         <option value="help">Help</option>
+                        <option value="transfer">Transfer</option>
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
                         <i className="fas fa-search text-gray-300 text-sm"></i>
@@ -155,16 +199,23 @@ function ManagerSidebar(props) {
                                     </div>
                                 </div>
                             </div>
-                        </div> :
-                        <div className="ml-2 mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Need Helps</p>
+                        </div> : option === "help" ?
+                            <div className="ml-2 mt-4">
+                                <p className="text-lg text-gray-700 font-medium">Need Helps</p>
 
-                            <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
-                            </ul>
-                        </div>
+                                <ul className="ml-4 mt-2">
+                                    <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
+                                </ul>
+                            </div> :
+                            <div className="ml-2 mt-4">
+                                <p className="text-lg text-gray-700 font-medium">Hospital Transfer</p>
+
+                                <ul className="ml-4 mt-2">
+                                    {convertListTransfer(listTransfer)}
+                                </ul>
+                            </div>
                 }
             </div>
 
