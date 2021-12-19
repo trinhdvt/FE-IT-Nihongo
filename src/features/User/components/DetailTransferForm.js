@@ -58,8 +58,16 @@ function DetailTransferForm(props) {
                     </div>
                     <p className="font-medium mt-4">From: <span className="font-normal">{transfer.fromHospital.name}</span></p>
                     <p className="font-medium mt-4">Location: <span className="font-normal">{transfer.fromHospital.address}</span></p>
-                    <p className="font-medium mt-4">Patient Profile: <span className="font-normal">{transfer.patientProfile}</span></p>
-                    <p className="font-medium mt-4">Medical Summary: <span className="font-normal">{transfer.medicalSummary}</span></p>
+                    <div className="flex items-center mt-4">
+                        <p className="font-medium">Patient Profile: </p>
+                        <a href={transfer.patientProfile} target="_blank" without rel="noreferrer"
+                            className="font-normal flex items-center">{transfer.patientProfile}</a>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <p className="font-medium">Medical Summary: </p>
+                        <a href={transfer.medicalSummary} target="_blank" without rel="noreferrer"
+                            className="font-normal flex items-center">{transfer.medicalSummary}</a>
+                    </div>
                     <p className="font-medium mt-4">Doctor's diagnosis: <span className="font-normal">{transfer.doctorDiagnosis}</span></p>
                     <div>
                         <p className="font-medium mt-4">Hospital changing reason:</p>
@@ -76,12 +84,7 @@ function DetailTransferForm(props) {
                                 {transfer.accepted ? "Confirmed" : check ? "Confirmed" : "Confirm"}
                             </div>
                         </div> :
-                        <div className="flex items-center justify-between mt-8">
-                            <div
-                                onClick={openModal}
-                                className="px-3 rounded-lg cursor-pointer py-2 border text-3xl border-gray-100 shadow bg-blue-400 text-white">
-                                <ion-icon name="add-outline"></ion-icon>
-                            </div>
+                        <div className="flex items-center justify-end mt-8">
                             <div className="px-6  py-3 text-2xl bg-blue-400 text-white mt-3 font-medium rounded uppercase">
                                 {transfer.accepted ? "Confirmed" : "Not Responded"}
                             </div>

@@ -120,6 +120,7 @@ function ManagerSidebar(props) {
                         <option value="channel">Channel</option>
                         <option value="help">Help</option>
                         <option value="transfer">Transfer</option>
+                    
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
                         <i className="fas fa-search text-gray-300 text-sm"></i>
