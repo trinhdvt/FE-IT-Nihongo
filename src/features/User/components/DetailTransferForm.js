@@ -23,7 +23,7 @@ function DetailTransferForm(props) {
 
     useEffect(() => {
         if (transfer) {
-            closeModal();
+            if(typeof closeModal !== "undefined") closeModal();
         } else {
             openModal();
         }

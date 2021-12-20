@@ -85,7 +85,6 @@ function FormChat(props) {
             newWS.connect({}, function (frame) {
                 dispatch(onChangeWS(newWS));
                 setCheck(true);
-                console.log(frame);
             }, function (error) {
                 console.log(error);
             });

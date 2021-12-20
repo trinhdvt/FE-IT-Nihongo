@@ -18,7 +18,23 @@ function FormCreateHospitalTransfer(props) {
 
     const info = useSelector(state => state.Auth.info);
 
-    const toHospital = useSelector(state => state.IdHospital);
+    const ToHospital = useSelector(state => state.IdHospital);
+
+    const [toHospital, setToHospital] = useState(ToHospital);
+
+    const [loading, setLoading] = useState(false);
+
+    console.log(toHospital)
+
+
+    useEffect(() => {
+        // setToHospital(ToHospital);
+        setLoading(false);
+        setTimeout(() => {
+            setLoading(true)
+            setToHospital(ToHospital);
+        }, 400)
+    }, [ToHospital])
 
     const [patientProfile, setPatientProfile] = useState(null);
 
@@ -100,104 +116,117 @@ function FormCreateHospitalTransfer(props) {
 
     return (
         <div className="absolute left-0 top-0 w-full shadow rounded border border-gray-300 bg-white">
-            <div className="absolute right-6 top-3 text-gray-600 cursor-pointer hover:text-gray-800 transition duration-300 ease-in-out text-xl"
-                onClick={CloseModal}
-            >
-                <i className="fas fa-times"> </i>
+            <div>
+                <div className="absolute right-6 top-3 text-gray-600 cursor-pointer hover:text-gray-800 transition duration-300 ease-in-out text-xl"
+                    onClick={CloseModal}
+                >
+                    <i className="fas fa-times"> </i>
+                </div>
+                {
+                    !loading ?
+                        <div className="" style={{ height: "618px" }} >
+                            <div className="loading">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div> </div> :
+
+                        <div className="bg-white">
+                            <form className="py-6 px-16 form-create-user shadow" onSubmit={handleSubmit(submitFormCreateUser)} >
+                                <p className="font-bold opacity-80 text-xl">To: {toHospital.name}</p>
+                                <div className="mt-5 flex items-center">
+                                    <p className="font-medium w-1/3 text-gray-600">Title:</p>
+                                    <div className="w-full relative">
+                                        <input
+                                            placeholder="Enter Title"
+                                            type="text"
+                                            {...register("title")}
+                                        />
+                                        {errors.title &&
+                                            <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                                {errors.title.message}
+                                            </p>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 flex items-center ">
+                                    <p className="font-medium w-1/3 text-gray-600">From:</p>
+                                    <input
+                                        value={info.from}
+                                        readOnly
+                                        type="text"
+                                    />
+                                </div>
+
+                                <div className="mt-4 flex items-center ">
+                                    <p className="font-medium w-1/3 text-gray-600">Location:</p>
+                                    <input
+                                        value={info.location}
+                                        readOnly
+                                        type="text"
+                                    />
+
+                                </div>
+
+                                <div className="mt-4 flex items-center ">
+                                    <p className="font-medium w-1/3 text-gray-600">Patient Profile:</p>
+                                    <input type="file" className="w-full" onChange={getPatientProfile}
+                                    />
+                                </div>
+
+                                <div className="mt-4 flex items-center ">
+                                    <p className="font-medium w-1/3 text-gray-600">Medical Summary:</p>
+                                    <input type="file" className="w-full" onChange={getMedicalSummary}
+                                    />
+                                </div>
+
+                                <div className="mt-4 flex items-center ">
+                                    <p className="font-medium w-1/3 text-gray-600">Doctor Diagnosis:</p>
+                                    <div className="w-full relative">
+                                        <input
+                                            placeholder="Enter Doctor Diagnosis"
+                                            type="text"
+                                            {...register("doctorDiagnosis")}
+                                        />
+                                        {errors.doctorDiagnosis &&
+                                            <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
+                                                {errors.doctorDiagnosis.message}
+                                            </p>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div className="mt-4">
+                                    <p className="font-medium w-1/3 text-gray-600">Hospital changing reason:</p>
+                                    <div className="w-full relative">
+                                        <textarea onChange={changeReason} name="" id="" cols="78" rows="4"
+                                            className="border border-gray-400 rounded mt-2 focus:border-gray-400 focus:outline-none pl-3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div className="mt-1">
+                                    <p className="font-medium w-1/3 text-gray-600">Contact: <span>{info.phone}</span></p>
+                                </div>
+
+
+
+                                <div className="mt-2 flex items-center justify-end">
+                                    <button
+                                        type="submit"
+                                        className="justify-center text-sm px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                    >
+                                        Send
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                }
             </div>
 
-            <div className="">
-                <form className="py-6 px-16 form-create-user shadow" onSubmit={handleSubmit(submitFormCreateUser)} >
-                    <p className="font-bold opacity-80 text-xl">To: {toHospital.name}</p>
-                    <div className="mt-5 flex items-center">
-                        <p className="font-medium w-1/3 text-gray-600">Title:</p>
-                        <div className="w-full relative">
-                            <input
-                                placeholder="Enter Title"
-                                type="text"
-                                {...register("title")}
-                            />
-                            {errors.title &&
-                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
-                                    {errors.title.message}
-                                </p>
-                            }
-                        </div>
-                    </div>
-
-                    <div className="mt-4 flex items-center ">
-                        <p className="font-medium w-1/3 text-gray-600">From:</p>
-                        <input
-                            value={info.from}
-                            readOnly
-                            type="text"
-                        />
-                    </div>
-
-                    <div className="mt-4 flex items-center ">
-                        <p className="font-medium w-1/3 text-gray-600">Location:</p>
-                        <input
-                            value={info.location}
-                            readOnly
-                            type="text"
-                        />
-
-                    </div>
-
-                    <div className="mt-4 flex items-center ">
-                        <p className="font-medium w-1/3 text-gray-600">Patient Profile:</p>
-                        <input type="file" className="w-full" onChange={getPatientProfile}
-                        />
-                    </div>
-
-                    <div className="mt-4 flex items-center ">
-                        <p className="font-medium w-1/3 text-gray-600">Medical Summary:</p>
-                        <input type="file" className="w-full" onChange={getMedicalSummary}
-                        />
-                    </div>
-
-                    <div className="mt-4 flex items-center ">
-                        <p className="font-medium w-1/3 text-gray-600">Doctor Diagnosis:</p>
-                        <div className="w-full relative">
-                            <input
-                                placeholder="Enter Doctor Diagnosis"
-                                type="text"
-                                {...register("doctorDiagnosis")}
-                            />
-                            {errors.doctorDiagnosis &&
-                                <p className="absolute text-sm text-red-600 ml-2 tracking-tighter font-semibold">
-                                    {errors.doctorDiagnosis.message}
-                                </p>
-                            }
-                        </div>
-                    </div>
-
-                    <div className="mt-4">
-                        <p className="font-medium w-1/3 text-gray-600">Hospital changing reason:</p>
-                        <div className="w-full relative">
-                            <textarea onChange={changeReason} name="" id="" cols="78" rows="4"
-                                className="border border-gray-400 rounded mt-2 focus:border-gray-400 focus:outline-none pl-3"></textarea>
-                        </div>
-                    </div>
-
-                    <div className="mt-1">
-                        <p className="font-medium w-1/3 text-gray-600">Contact: <span>{info.phone}</span></p>
-                    </div>
-
-
-
-                    <div className="mt-2 flex items-center justify-end">
-                        <button
-                            type="submit"
-                            className="justify-center text-sm px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        >
-                            Send
-                        </button>
-                    </div>
-
-                </form>
-
-            </div>
         </div>
     );
 }
