@@ -16,6 +16,9 @@ import { ManagementApi } from '../../Admin/constants/admin-api';
 import { useSelector } from 'react-redux';
 import DetailTransferFrom from '../../User/components/DetailTransferForm';
 import FormChat from '../../../components/Chat/FormChat';
+import { fetchListRoom } from '../../User/reducers/ListRoom';
+import { onChangeInfoRoom } from '../../User/reducers/InfoRoom';
+import { useDispatch } from 'react-redux';
 
 
 function Manager(props) {
@@ -106,6 +109,20 @@ function Manager(props) {
     }
 
     const [list, setList] = useState([]);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        axios.get('/api/room', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => {
+            dispatch(fetchListRoom(res.data));
+            dispatch(onChangeInfoRoom(res.data[0]));
+        })
+
+    }, [token, dispatch])
 
     useEffect(() => {
         const fetch_List = async () => {
