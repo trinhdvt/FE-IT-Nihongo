@@ -117,6 +117,7 @@ function ManagerSidebar(props) {
                         onChange={changeOption}
                         className="cursor-pointer focus:outline-none border border-gray-400 rounded-lg px-2 py-1 mr-2"
                     >
+                        <option value="management">Management</option>
                         <option value="channel">Channel</option>
                         <option value="help">Help</option>
                         <option value="transfer">Transfer</option>
