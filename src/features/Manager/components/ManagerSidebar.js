@@ -6,7 +6,15 @@ import { onChangeTransfer } from '../../User/reducers/transfer';
 
 function ManagerSidebar(props) {
 
-    const { list, optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+    const { optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+
+    const ListRoom = useSelector(state => state.ListRoom);
+
+    const [listRoom, setListRoom] = useState(ListRoom);
+
+    useEffect(() => {
+        setListRoom(ListRoom);
+    }, [ListRoom])
 
     const [id, setId] = useState(-1);
 
@@ -121,7 +129,7 @@ function ManagerSidebar(props) {
                         <option value="channel">Channel</option>
                         <option value="help">Help</option>
                         <option value="transfer">Transfer</option>
-                    
+
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
                         <i className="fas fa-search text-gray-300 text-sm"></i>
@@ -136,7 +144,7 @@ function ManagerSidebar(props) {
                             <div className="ml-2 mt-3">
                                 <p className="text-xl text-gray-700 font-medium">Channel</p>
                                 <ul className="ml-4 mt-2">
-                                    {covertList(list)}
+                                    {covertList(listRoom)}
                                 </ul>
                             </div>
 
@@ -210,14 +218,20 @@ function ManagerSidebar(props) {
                                     <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
                                     <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
                                 </ul>
-                            </div> :
-                            <div className="ml-2 mt-4">
-                                <p className="text-lg text-gray-700 font-medium">Hospital Transfer</p>
+                            </div> : option === "management" ?
+                                <div className="ml-2 mt-3">
+                                    <p className="text-xl text-gray-700 font-medium">Channel</p>
+                                    <ul className="ml-4 mt-2">
+                                        {covertList(listRoom)}
+                                    </ul>
+                                </div> :
+                                <div className="ml-2 mt-4">
+                                    <p className="text-lg text-gray-700 font-medium">Hospital Transfer</p>
 
-                                <ul className="ml-4 mt-2">
-                                    {convertListTransfer(listTransfer)}
-                                </ul>
-                            </div>
+                                    <ul className="ml-4 mt-2">
+                                        {convertListTransfer(listTransfer)}
+                                    </ul>
+                                </div>
                 }
             </div>
 

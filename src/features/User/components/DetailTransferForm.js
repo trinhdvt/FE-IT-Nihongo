@@ -25,7 +25,7 @@ function DetailTransferForm(props) {
         if (transfer) {
             if(typeof closeModal !== "undefined") closeModal();
         } else {
-            openModal();
+            if(typeof openModal !== "undefined")  openModal();
         }
     }, [])
 
