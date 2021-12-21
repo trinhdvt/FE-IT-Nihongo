@@ -119,7 +119,8 @@ function Manager(props) {
             }
         }).then(res => {
             dispatch(fetchListRoom(res.data));
-            dispatch(onChangeInfoRoom(res.data[0]));
+            const newData = res.data.find(x => x.id === 15);
+            dispatch(onChangeInfoRoom(newData));
         })
 
     }, [token, dispatch])
