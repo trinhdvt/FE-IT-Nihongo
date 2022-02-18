@@ -40,7 +40,6 @@ function ChannelManagement(props) {
                     }
                 });
                 if (response) {
-                    console.log(response.data)
                     setList(response.data);
                     setLoading(false);
                 }

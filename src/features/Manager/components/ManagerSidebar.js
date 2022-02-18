@@ -1,10 +1,59 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { onChangeTransfer } from '../../User/reducers/transfer';
 
 function ManagerSidebar(props) {
 
-    const {id, list, optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+    const { optionSidebar, changeOptionSidebar, changeChannel, openShowDetailChannel } = props;
+
+    const ListRoom = useSelector(state => state.ListRoom);
+
+    const [listRoom, setListRoom] = useState(ListRoom);
+
+    useEffect(() => {
+        setListRoom(ListRoom);
+    }, [ListRoom])
+
+    const [id, setId] = useState(-1);
 
     const [option, setOption] = useState(optionSidebar);
+
+    const token = useSelector(state => state.Auth.token);
+
+    const dispatch = useDispatch();
+
+    const [listTransfer, setListTransfer] = useState();
+
+    useEffect(() => {
+        axios.get('/api/transfer-form', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                setListTransfer(res.data);
+                dispatch(onChangeTransfer(res.data[0]))
+            })
+            .catch(err => console.log(err))
+    }, [token, dispatch])
+
+    const convertListTransfer = (list) => {
+        if (list) {
+            const result = list.map((item, index) => {
+                return (
+                    <li
+                        key={index}
+                        className="text-sm font-medium text-gray-600 cursor-pointer mt-2"
+                        onClick={() => dispatch(onChangeTransfer(item))}
+                    >{item.title}</li>
+                )
+            })
+
+            return result;
+        }
+    }
 
     const changeOption = (e) => {
         setOption(e.target.value);
@@ -24,18 +73,20 @@ function ManagerSidebar(props) {
         }
 
         const showListCode = result.map((item, index) => {
-            console.log(item)
             return (
                 <li
                     key={index}
-                className={`text-sm flex items-center justify-between font-medium mt-3 cursor-pointer ${item.id === id ? 'text-gray-600' : ' text-gray-400'}`}
+                    className={`text-sm flex items-center justify-between font-medium mt-3 cursor-pointer ${item.id === id ? 'text-gray-600' : ' text-gray-400'}`}
                 >
                     <p
                         className="w-52 truncate"
-                        // onClick={() => SetHospital(item.id)}
                         title={item.title}
                     >{item.title}</p>
-                    <i class="far fa-eye" title="View hospital details" onClick={() => OpenShowDetail(item)}></i>
+                    <i class="far fa-eye" title="View hospital details"
+                        onClick={() => {
+                            setId(item.id);
+                            OpenShowDetail(item);
+                        }}></i>
                 </li>
             )
         })
@@ -74,8 +125,11 @@ function ManagerSidebar(props) {
                         onChange={changeOption}
                         className="cursor-pointer focus:outline-none border border-gray-400 rounded-lg px-2 py-1 mr-2"
                     >
+                        <option value="management">Management</option>
                         <option value="channel">Channel</option>
                         <option value="help">Help</option>
+                        <option value="transfer">Transfer</option>
+
                     </select>
                     <div className="flex items-center bg-white border border-gray-400 rounded-lg px-2 py-1">
                         <i className="fas fa-search text-gray-300 text-sm"></i>
@@ -90,14 +144,14 @@ function ManagerSidebar(props) {
                             <div className="ml-2 mt-3">
                                 <p className="text-xl text-gray-700 font-medium">Channel</p>
                                 <ul className="ml-4 mt-2">
-                                    {covertList(list)}
+                                    {covertList(listRoom)}
                                 </ul>
                             </div>
 
                             <p className="text-lg text-gray-700 font-medium mt-4">Recent Direct Message</p>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 bg-gray-200 flex item-center rounded-lg">
+                                <div className="p-2 bg-gray-100 flex item-center rounded-lg">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
@@ -117,18 +171,18 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Kevin</p>
+                                        <p className="text-xs truncate text-gray-400">Are you oke?</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">10/8/2021</p>
                                         <div className="flex items-center justify-end">
                                             <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
@@ -137,34 +191,47 @@ function ManagerSidebar(props) {
                             </div>
 
                             <div className="mt-2 cursor-pointer">
-                                <div className="p-2 flex item-center rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out">
+                                <div className="p-2 flex item-center rounded-lg bg-gray-100 transition duration-300 ease-in-out">
                                     <div className="mr-2 w-10 h-10 text-xs flex items-center justify-center rounded-full bg-gray-300 mr-2 text-gray-700">
                                         <span>Avatar</span>
                                     </div>
 
                                     <div className="leading-3 w-36">
-                                        <p className="font-medium text-sm text-gray-600">Dr. Johnson</p>
-                                        <p className="text-xs truncate text-gray-400">Alex please call me when you have time</p>
+                                        <p className="font-medium text-sm text-gray-600">Dr. Ronaldo</p>
+                                        <p className="text-xs truncate text-gray-400">Good job!!!</p>
                                     </div>
 
                                     <div className="">
-                                        <p className="text-xs text-gray-400">16/09/2021</p>
+                                        <p className="text-xs text-gray-400">13/7/2021</p>
                                         <div className="flex items-center justify-end">
                                             <i class="fas fa-ellipsis-h text-sm mt-1 mr-1 opacity-70"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> :
-                        <div className="ml-2 mt-4">
-                            <p className="text-lg text-gray-700 font-medium">Need Helps</p>
+                        </div> : option === "help" ?
+                            <div className="ml-2 mt-4">
+                                <p className="text-lg text-gray-700 font-medium">Need Helps</p>
 
-                            <ul className="ml-4 mt-2">
-                                <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
-                                <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
-                            </ul>
-                        </div>
+                                <ul className="ml-4 mt-2">
+                                    <li className="text-sm font-medium text-gray-600 cursor-pointer">#lack_of_manpower</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_hospital_beds</li>
+                                    <li className="text-sm font-medium text-gray-400 cursor-pointer mt-2 hover:opacity-80">#lack_of_facilities</li>
+                                </ul>
+                            </div> : option === "management" ?
+                                <div className="ml-2 mt-3">
+                                    <p className="text-xl text-gray-700 font-medium">Channel</p>
+                                    <ul className="ml-4 mt-2">
+                                        {covertList(listRoom)}
+                                    </ul>
+                                </div> :
+                                <div className="ml-2 mt-4">
+                                    <p className="text-lg text-gray-700 font-medium">Hospital Transfer</p>
+
+                                    <ul className="ml-4 mt-2">
+                                        {convertListTransfer(listTransfer)}
+                                    </ul>
+                                </div>
                 }
             </div>
 

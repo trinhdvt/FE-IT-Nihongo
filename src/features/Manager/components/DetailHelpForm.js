@@ -2,7 +2,7 @@ import React from 'react';
 
 function DetailHelpForm(props) {
     return (
-        <div className="border border-gray-400 p-4 rounded">
+        <div className="border border-gray-400 p-4 rounded h-full">
             <div className="flex items-center justify-between">
                 <p className="font-bold opacity-80 text-xl">#lack_of_manpower</p>
                 <p className="text-blue-200 text-xs">12:00 04/1/2000</p>

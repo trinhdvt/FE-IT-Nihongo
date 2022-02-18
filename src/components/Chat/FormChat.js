@@ -1,21 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import ClassNames from 'classnames';
-// import { SOCKET_URL } from '../../constants/Socket_URL';
-// import SockJsClient from 'react-stomp';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useSelector } from 'react-redux';
-import { addMessage } from '../../reducers/ListMessage';
-import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import qs from 'qs';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
+import { onChangeWS } from '../../features/User/reducers/UserReducer';
 
 function FormChat(props) {
 
+    const InfoRoom = useSelector(state => state.InfoRoom);
+
+    const [listMess, setListMess] = useState([]);
+
+    const [infoRoom, setInfoRoom] = useState(InfoRoom);
+
     const dispatch = useDispatch();
 
-    const ListMessage = useSelector(state => state.ListMessage);
+    const wsReducer = useSelector(state => state.ChangeWS);
+
+    const [ws, setWs] = useState(wsReducer);
+
+    const token = useSelector(state => state.Auth.token);
+
+    const senderId = useSelector(state => state.Auth.info.jti);
+
+    const [check, setCheck] = useState(false);
+
+    useEffect(() => {
+        setInfoRoom(InfoRoom);
+    }, [InfoRoom])
+
+    useEffect(() => {
+        if (infoRoom) {
+            axios.get(`/api/room/${infoRoom.id}/message`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    setListMess(res.data);
+
+                })
+                .catch(err => console.log(err))
+        }
+    })
+
+    useEffect(() => {
+        setWs(wsReducer);
+    }, [wsReducer])
+
+    const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -29,32 +68,59 @@ function FormChat(props) {
         message: yup.string().required()
     }).required();
 
-    // const { senderId, recipientId, name, arr, idChat, checkOther, header } = props;
-
-    const senderId = 1;
 
     const { register, handleSubmit, reset } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const [listMessage, setListMessage] = useState([]);
-
     useEffect(() => {
         scrollToBottom();
-        setListMessage(ListMessage);
-    }, [ListMessage])
+    }, [listMess])
 
-    const messagesEndRef = useRef(null);
+    useEffect(() => {
+        if (ws === null || !check) {
+            const socket = new SockJS("/socket-server");
+            let newWS = Stomp.over(socket);
+            // kết nối tới Socket
+            newWS.connect({}, function (frame) {
+                dispatch(onChangeWS(newWS));
+                setCheck(true);
+            }, function (error) {
+                console.log(error);
+            });
+        }
+
+    }, [dispatch, ws, check])
+
+    useEffect(() => {
+        if (ws === null || !check) return;
+        ws.subscribe(`/topic/message/${infoRoom.id}`, function (message) {
+            // xem lại kết quả phản hồi mẫu của API gửi tin nhắn
+            if (infoRoom) {
+                axios.get(`/api/room/${infoRoom.id}/message`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(res => {
+                        setListMess(res.data);
+    
+                    })
+                    .catch(err => console.log(err))
+            }
+        });
+    }, [ws, infoRoom, check, token])
+
+
 
     const sendMessage = (data) => {
-        dispatch(addMessage({
-            senderId: 1,
-            content: data.message
-        }));
-        setListMessage(state => [...state, {
-            senderId: 1,
-            content: data.message
-        }])
+        if (data.message.length > 0) {
+            axios.post(`/api/room/${infoRoom.id}/message`, qs.stringify(data), {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => console.log(res.data))
+        }
         scrollToBottom();
         reset();
     }
@@ -62,16 +128,14 @@ function FormChat(props) {
     const convertListMessage = (listMessage) => {
         const result = listMessage.length > 0 ? listMessage.map((item, index) => {
             return (
-                <div className={ClassNames("py-2 px-3 mt-1", {
-                    "text-right": item.senderId === senderId,
-                    "flex items-center": item.senderId !== senderId
-                })} key={index}>
-                    {(item.senderId !== senderId) ?
-                        <div className="bg-avatar bg-no-repeat bg-cover h-8 w-8 rounded-full mr-2"></div>
+                <div className={`py-2 px-3 mt-1 flex items-center ${item.sender.code === senderId ? 'flex justify-end' : ''}`}
+                    key={index}>
+                    {(item.sender.code !== senderId) ?
+                        <img className="bg-no-repeat bg-cover h-8 w-8 rounded-full mr-2" src={item.sender.avatarUrl} alt="" />
                         : <div className="w-8 mr-2"></div>
                     }
-                    <div>
-                        <span className="py-2 px-4 w-auto bg-blue-400 text-white rounded-full">{item.content}</span>
+                    <div className="max-w-2xl w-auto break-words py-2 px-4 bg-blue-400 text-white rounded-full">
+                        <span className="">{item.body}</span>
                     </div>
                 </div>
             )
@@ -84,10 +148,7 @@ function FormChat(props) {
             <div className="h-full flex flex-col justify-between ">
                 <div className="flex items-center bg-white p-2 justify-between rounded-t-md">
                     <div className="flex items-center text-xl">
-                        <div className="mx-4 h-14 w-14 flex items-center justify-center rounded-lg bg-blue-400 text-white">
-                            <span className="text-sm">Avatar</span>
-                        </div>
-                        <p className="opacity-80">Dr. Johnson</p>
+                        <p className="ml-3 text-gray-500 font-medium">{infoRoom.title}</p>
                     </div>
                     <div className="flex items-center">
                         <div className="text-blue-400 text-xl mx-1 p-3 bg-gray-50 rounded-lg flex items-center justify-center">
@@ -108,7 +169,7 @@ function FormChat(props) {
                 <div className="">
                     <Scrollbars style={{ height: 460 }}>
                         <div className="pt-3 px-2">
-                            {convertListMessage(listMessage)}
+                            {convertListMessage(listMess)}
                             <div ref={messagesEndRef} />
                         </div>
                     </Scrollbars>
@@ -139,23 +200,6 @@ function FormChat(props) {
                         </button>
                     </form>
                 </div>
-                {/* <SockJsClient url={SOCKET_URL}
-                topics={[`/topic/${idChat}/queue/messages`]}
-                onConnect={() => {}}
-                onDisconnect={() => {}}
-                onMessage={async (msg) => {
-                    message.push(msg);
-                    if (msg.senderId === senderId) {
-                        setMess('')
-                    }
-                    await dispatch(FetchChat2({ id: senderId, header: header }));
-                    await dispatch(FetchChat({ id: senderId, header: header }));
-                    scrollToBottom();
-                }}
-                ref={(client) => {
-                    clientRef = client;
-                }}
-            /> */}
             </div>
         </div>
     );
